@@ -3,8 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 
 const adminUser = [
   { user: "2315", password: "1234" },
-  { user: "2769", password: "1234" },
-  { user: "2317", password: "1234" },
+  { user: "lmoreno", password: "1234" },
 ];
 
 export const authOptions = {
