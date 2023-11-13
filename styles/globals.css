@@ -24,6 +24,19 @@ h1 {
   @apply w-6 h-6 text-text-generation;
 }
 
-.sigCanvas{
-  @apply h-full max-h-[100px] w-full max-w-[200px] resize-none rounded-[7px] border border-blue-gray-200 bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-indigo-500 focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50
+.sigCanvas {
+  @apply h-full max-h-[200px] w-full max-w-[275px] resize-none rounded-[7px] border border-blue-gray-200 bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-indigo-500 focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50;
+}
+
+table.basic {
+  @apply w-full;
+}
+
+table.basic thead tr td,
+table.basic thead tr th {
+  @apply text-sm text-gray-600 uppercase border-b border-gray-200 px-2 py-2;
+}
+
+table.basic tbody tr td {
+  @apply pl-5;
 }

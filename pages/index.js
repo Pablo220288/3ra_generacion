@@ -1,14 +1,15 @@
 import Layout from "@/components/Layout";
-import { useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 export default function Home() {
   const { data: session } = useSession();
-
+  console.log(session);
   return (
     <Layout>
       <div className="text-text-generation flex justify-between">
         <h2>
-          Hello, <b>{session?.user?.name}</b>
+          Hola, <b>{session?.user?.name}</b>
         </h2>
       </div>
     </Layout>

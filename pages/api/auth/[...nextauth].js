@@ -1,10 +1,7 @@
+import { mongooseConnect } from "@/lib/mongoose";
+import { AdminModel } from "@/models/Admin";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
-const adminUser = [
-  { user: "2315", password: "1234" },
-  { user: "lmoreno", password: "1234" },
-];
 
 export const authOptions = {
   session: {
@@ -14,23 +11,52 @@ export const authOptions = {
     CredentialsProvider({
       type: "credentials",
       credentials: {},
-      authorize: (credentials, req) => {
+      authorize: async (credentials, req) => {
         const { user, password } = credentials;
-        if (
-          !adminUser.some(
-            (admin) => admin.user === user && admin.password === password
-          )
-        ) {
-          throw new Error("Invalid Credentials");
+
+        try {
+          await mongooseConnect();
+
+          const admin = await AdminModel.findOne({ user });
+
+          if (!user) {
+            throw new Error("Invalid Credentials");
+          }
+
+          const passwordMatch = await AdminModel.comparePassword(
+            password,
+            admin.password
+          );
+
+          if (!passwordMatch) {
+            throw new Error("Invalid Credentials");
+          }
+
+          return { name: admin.fullName };
+        } catch (error) {
+          console.log("Error: ", error);
         }
-        return {
-          id: "1234",
-          name: "Leonardo Moreno",
-          email: "leomoreno@gmail.com.ar",
-        };
       },
     }),
   ],
+  callbacks: {
+    session: async (session) => {
+      if (!session) return;
+
+      await mongooseConnect();
+
+      const userData = await AdminModel.findOne({
+        fullName: session.session.user.name,
+      });
+
+      return {
+        user: {
+          id: userData.id,
+          name: userData.fullName,
+        },
+      };
+    },
+  },
   pages: {
     signIn: "/auth/signin",
     error: "/auth/error",

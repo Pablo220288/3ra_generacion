@@ -13,7 +13,7 @@ export default function OrdersPage() {
       <div className="mt-2 flex justify-between">
         <div className="flex items-center gap-2">
           <h4 className="block font-sans text-2xl leading-snug tracking-normal text-indigo-500 antialiased">
-            Orders
+            Ordenes de Trabajo
           </h4>
           {isOrders && <Spinner color={"#0d6c9569"} />}
         </div>

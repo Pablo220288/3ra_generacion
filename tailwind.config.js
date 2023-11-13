@@ -16,6 +16,7 @@ module.exports = withMT({
         "backgroud-buttom": "#0d6c95",
         "backgroud-buttom-shadow": "#0d6c9569",
         "text-generation": "#0a5a7d",
+        "background-alert": "#0000002c",
       },
       fontFamily: {
         pablo: ['"The Scientist", sans-serif', ...defaultTheme.fontFamily.sans],
