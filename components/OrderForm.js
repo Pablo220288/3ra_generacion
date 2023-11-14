@@ -1,6 +1,5 @@
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
-
 import toast, { Toaster } from "react-hot-toast";
 import { OrderContext } from "./OrderContext";
 import { AlertContext } from "./AlertContext";
@@ -8,7 +7,6 @@ import { useSession } from "next-auth/react";
 
 export default function OrderForm({
   title,
-  numberOrder,
   orders,
   _id,
   file: existingFile,
@@ -25,9 +23,10 @@ export default function OrderForm({
   const { data: session } = useSession();
 
   const [file, setFile] = useState(
-    existingFile &&
-      "0".repeat(4 - existingFile.toString().length) +
-        Math.abs(existingFile).toString()
+    existingFile
+      ? "0".repeat(4 - existingFile.toString().length) +
+          Math.abs(existingFile).toString()
+      : ""
   );
   const [dateOrder, setDateOrder] = useState(
     existingDateOrder
@@ -45,12 +44,16 @@ export default function OrderForm({
     for (let numero of orders) {
       if (max < numero.file) max = numero.file;
     }
-    setFile("0".repeat(4 - (max + 1).toString().length) + Math.abs((max + 1)).toString());
+    setFile(
+      "0".repeat(4 - (max + 1).toString().length) + Math.abs(max + 1).toString()
+    );
   };
 
   useEffect(() => {
     setSignature("");
-    fileNumber();
+    if (!existingFile) {
+      fileNumber();
+    }
   }, []);
 
   const saveStaff = async (ev) => {

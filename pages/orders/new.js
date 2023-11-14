@@ -38,7 +38,6 @@ export default function StaffNew() {
       {orders.length > 0 && (
         <OrderForm
           title={"Nueva Orden"}
-          numberOrder={orders.length + 1}
           orders={orders}
         />
       )}
