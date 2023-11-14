@@ -12,6 +12,8 @@ export function AlertContextProvider({ children }) {
   const [destination, setDestination] = useState("");
   const [data, setData] = useState("");
   const [section, setSection] = useState("");
+  const [classNameIcon, setClassNameIcon] = useState("");
+  const [classNameButton, setClassNameButton] = useState("");
 
   const [refresh, setRefresh] = useState(false);
 
@@ -21,13 +23,16 @@ export function AlertContextProvider({ children }) {
     "inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg dark:text-blue-300 dark:bg-blue-900";
   const classIconDelete = classIcon + " text-pink-500 bg-pink-100 ";
   const classIconAdd = classIcon + " text-indigo-500 bg-indigo-100";
+  const classIconUpdate = classIcon + " text-orange-500 bg-orange-100";
 
   const classButton =
     "inline-flex justify-center w-full px-2 py-1.5 text-xs font-medium text-center text-white rounded-lg cursor-pointer focus:ring-4 focus:outline-none dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800";
   const classButtonDelete =
     classButton + " bg-pink-600 hover:bg-pink-700 focus:ring-pink-300";
-  const classButtonnAdd =
+  const classButtonAdd =
     classButton + " bg-indigo-500 hover:bg-indigo-700 focus:ring-indigo-300";
+  const classButtonUpdate =
+    classButton + " bg-orange-500 hover:bg-orange-700 focus:ring-orange-300";
 
   const showAlert = (file, action, url, destination, data, section) => {
     try {
@@ -37,6 +42,18 @@ export function AlertContextProvider({ children }) {
       setDestination(destination);
       setData(data);
       setSection(section);
+
+      if (action === "add") {
+        setClassNameIcon(classIconAdd);
+        setClassNameButton(classButtonAdd);
+      } else if (action === "delete") {
+        setClassNameIcon(classIconDelete);
+        setClassNameButton(classButtonDelete);
+      } else {
+        setClassNameIcon(classIconUpdate);
+        setClassNameButton(classButtonUpdate);
+      }
+      
     } catch (error) {
       console.error("Error Show Alert:", error);
     } finally {
@@ -55,11 +72,34 @@ export function AlertContextProvider({ children }) {
   };
 
   const actionAlert = async () => {
-    if (action === "delete") {
+    try {
+      if (action === "delete") {
+        await axios.delete(url);
+      }
+
+      if (action === "add") {
+        await axios.post(url, data);
+      }
+
+      if (action === "update") {
+        await axios.put(url, data);
+      }
+    } catch (error) {
+      console.error("Error", error);
+    } finally {
+      if (destination === undefined) {
+        setRefresh(!refresh);
+      } else {
+        router.push(destination);
+      }
+      hideAlert();
+    }
+
+    /*     if (action === "delete") {
       try {
         await axios.delete(url);
       } catch (error) {
-        console.error("Error Hide Alert:", error);
+        console.error("Error Delete:", error);
       } finally {
         if (destination === undefined) {
           setRefresh(!refresh);
@@ -72,7 +112,7 @@ export function AlertContextProvider({ children }) {
       try {
         await axios.post(url, data);
       } catch (error) {
-        console.error("Error Hide Alert:", error);
+        console.error("Error Add:", error);
       } finally {
         if (destination === undefined) {
           setRefresh(!refresh);
@@ -81,9 +121,8 @@ export function AlertContextProvider({ children }) {
         }
         hideAlert();
       }
-    }
+    } */
   };
-
   return (
     <AlertContext.Provider
       value={{
@@ -96,9 +135,7 @@ export function AlertContextProvider({ children }) {
         <div className="fixed z-50 bg-background-alert flex top-0 left-0 right-0 bottom-0 items-center justify-center transition-all ease-in duration-300 z-50">
           <div className="w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow-md dark:bg-gray-800 dark:text-gray-400">
             <div className="flex">
-              <div
-                className={action === "delete" ? classIconDelete : classIconAdd}
-              >
+              <div className={classNameIcon}>
                 {action === "add" && section === "admin" && (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -147,33 +184,78 @@ export function AlertContextProvider({ children }) {
                     />
                   </svg>
                 )}
+                {action === "update" && (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-4 h-4"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+                    />
+                  </svg>
+                )}
                 <span className="sr-only">Delete icon</span>
               </div>
               <div className="ml-3 text-sm font-normal">
-                <span className="mb-1 text-sm font-semibold text-gray-900 dark:text-white">
-                  {action === "add" && section === "admin"
-                    ? "Agregar Administrador"
-                    : "Agregar Orden"}
-                  {action === "delete" && section === "admin"
-                    ? "Eliminar Administrador"
-                    : "Eliminar Orden"}
-                </span>
+                {action === "add" && (
+                  <span className="mb-1 text-sm font-semibold text-gray-900 dark:text-white">
+                    {section === "admin"
+                      ? "Agregar Administrador"
+                      : "Agregar Orden"}
+                  </span>
+                )}
+                {action === "delete" && (
+                  <span className="mb-1 text-sm font-semibold text-gray-900 dark:text-white">
+                    {section === "admin"
+                      ? "Eliminar Administrador"
+                      : "Eliminar Orden"}
+                  </span>
+                )}
+                {action === "update" && (
+                  <span className="mb-1 text-sm font-semibold text-gray-900 dark:text-white">
+                    {section === "admin"
+                      ? "Actualizar Administrador"
+                      : "Actualizar Orden"}
+                  </span>
+                )}
                 <div className="mb-2 text-sm font-normal">
-                  {action == "add"
-                    ? `Seguro que quiere agregar a ${file} como Administrador?`
-                    : `Seguro que quiere elimiar a ${file} como Administrador?`}
+                  {action === "add" && (
+                    <span className="text-sm font-normal">
+                      {section === "admin"
+                        ? `Seguro que quiere agregar a ${file} como Administrador?`
+                        : `Seguro que quiere agregar la Orden ${file}?`}
+                    </span>
+                  )}
+                  {action === "delete" && (
+                    <span className="text-sm font-normal">
+                      {section === "admin"
+                        ? `Seguro que quiere eliminar a ${file} como Administrador?`
+                        : `Seguro que quiere eliminar la Orden ${file}?`}
+                    </span>
+                  )}
+                  {action === "update" && (
+                    <span className="text-sm font-normal">
+                      {section === "admin"
+                        ? `Seguro que quiere actualizar al Administrador ${file}?`
+                        : `Seguro que quiere actualizar la Orden ${file}?`}
+                    </span>
+                  )}
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <div>
                     <div
                       onClick={actionAlert}
-                      className={
-                        action === "delete"
-                          ? classButtonDelete
-                          : classButtonnAdd
-                      }
+                      className={classNameButton}
                     >
-                      {action == "add" ? "Agregar" : "Eliminar"}
+                      {action == "add" && "Agregar"}
+                      {action == "delete" && "Eliminar"}
+                      {action == "update" && "Actualizar"}
                     </div>
                   </div>
                   <div>

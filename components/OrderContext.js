@@ -1,10 +1,9 @@
-import { createContext, useEffect, useRef, useState } from "react";
+import { createContext, useRef, useState } from "react";
 import SignatureCanvas from "react-signature-canvas";
 
 export const OrderContext = createContext({});
 
 export function OrderContextProvider({ children }) {
-  const [orders, setOrders] = useState([]);
   const [signatureShow, setSignatureShow] = useState(false);
   const [signature, setSignature] = useState("");
 
@@ -26,17 +25,15 @@ export function OrderContextProvider({ children }) {
     try {
       setSignature(sigCanvas.current.getTrimmedCanvas().toDataURL("image/png"));
     } catch (error) {
-      console.log("Error ", error);
+      console.error("Error ", error);
     } finally {
       hideSignature();
     }
   };
-  console.log(signature);
 
   return (
     <OrderContext.Provider
       value={{
-        orders,
         showSignature,
         signature,
         setSignature,

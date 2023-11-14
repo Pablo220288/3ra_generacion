@@ -38,5 +38,5 @@ table.basic thead tr th {
 }
 
 table.basic tbody tr td {
-  @apply pl-5;
+  @apply pl-3;
 }

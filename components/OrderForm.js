@@ -1,6 +1,4 @@
-import axios from "axios";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 
 import toast, { Toaster } from "react-hot-toast";
@@ -8,63 +6,78 @@ import { OrderContext } from "./OrderContext";
 import { AlertContext } from "./AlertContext";
 import { useSession } from "next-auth/react";
 
-export default function OrderForm({ title }) {
-  const { orders, showSignature, signature, setSignature } =
-    useContext(OrderContext);
+export default function OrderForm({
+  title,
+  numberOrder,
+  orders,
+  _id,
+  file: existingFile,
+  dateOrder: existingDateOrder,
+  name: existingName,
+  description: existingDescription,
+  signature: existingSignature,
+  nameSignature: existingNameSignature,
+}) {
+  const { showSignature, signature, setSignature } = useContext(OrderContext);
 
   const { showAlert } = useContext(AlertContext);
 
-  const router = useRouter();
-
   const { data: session } = useSession();
 
-  const [file, setFile] = useState("000" + `${orders.length + 1}`);
-  const [dateOrder, setDateOrder] = useState(
-    new Date().toISOString().slice(0, 10)
+  const [file, setFile] = useState(
+    existingFile &&
+      "0".repeat(4 - existingFile.toString().length) +
+        Math.abs(existingFile).toString()
   );
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [nameSignature, setNameSignature] = useState("");
+  const [dateOrder, setDateOrder] = useState(
+    existingDateOrder
+      ? new Date(existingDateOrder).toISOString().slice(0, 10)
+      : new Date().toISOString().slice(0, 10)
+  );
+  const [name, setName] = useState(existingName || "");
+  const [description, setDescription] = useState(existingDescription || "");
+  const [nameSignature, setNameSignature] = useState(
+    existingNameSignature || ""
+  );
 
-  const [goToStaff, setGoToStaff] = useState(false);
+  const fileNumber = () => {
+    let max = 0;
+    for (let numero of orders) {
+      if (max < numero.file) max = numero.file;
+    }
+    setFile("0".repeat(4 - (max + 1).toString().length) + Math.abs((max + 1)).toString());
+  };
 
   useEffect(() => {
     setSignature("");
+    fileNumber();
   }, []);
 
   const saveStaff = async (ev) => {
     ev.preventDefault();
+    const dataSignature = existingSignature ? existingSignature : signature;
+
     const data = {
       file,
       dateOrder,
       name,
       description,
-      signature,
+      signature: dataSignature,
       nameSignature,
       owner: session.user.id,
+      _id,
     };
 
     if (Object.values(data).some((info) => info === "")) {
       toast.error("Complete todos los campos.");
       return;
     }
-
-    showAlert(file, "add", "/api/order/create", "/ordres", data, "order");
-
-    /*     if (_id) {
-      // Update
-      await axios.put("/api/staff/update", { ...data, _id });
-      setGoToStaff(true);
+    if (_id) {
+      showAlert(file, "update", "/api/order/update", "/orders", data, "order");
     } else {
-      // Create
-      await axios.post("/api/staff/create", data);
-      setGoToStaff(true);
-    }  */
+      showAlert(file, "add", "/api/order/create", "/orders", data, "order");
+    }
   };
-
-  if (goToStaff) {
-    router.push("/orders");
-  }
 
   return (
     <form onSubmit={saveStaff} className="mt-4 flex flex-col">
@@ -142,58 +155,70 @@ export default function OrderForm({ title }) {
         </div>
       </div>
       <div className="h-[45px] mb-4 flex gap-6 items-end">
-        <div className="flex items-center gap-2">
-          <button
-            className="block w-fit select-none rounded-lg bg-indigo-500 py-1 px-1 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-indigo-500/20 transition-all hover:shadow-lg hover:shadow-indigo-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-            type="button"
-            data-ripple-light="true"
-            onClick={showSignature}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-4 h-4"
+        {!existingSignature && (
+          <div className="flex items-center gap-2">
+            <button
+              className="block w-fit select-none rounded-lg bg-indigo-500 py-1 px-1 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-indigo-500/20 transition-all hover:shadow-lg hover:shadow-indigo-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+              type="button"
+              data-ripple-light="true"
+              onClick={showSignature}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
-              />
-            </svg>
-          </button>
-          <button
-            className="block w-fit select-none rounded-lg bg-pink-500 py-1 px-1 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-            type="button"
-            data-ripple-light="true"
-            onClick={() => setSignature("")}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="w-4 h-4"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-4 h-4"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+                />
+              </svg>
+            </button>
+            <button
+              className="block w-fit select-none rounded-lg bg-pink-500 py-1 px-1 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+              type="button"
+              data-ripple-light="true"
+              onClick={() => setSignature("")}
             >
-              <path
-                fillRule="evenodd"
-                d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </button>
-        </div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-4 h-4"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        )}
         <div className="flex items-end gap-4">
           <span className="text-[11px] font-normal leading-tight text-blue-gray-400">
             Autorizado por:
           </span>
-          {signature && (
+          {existingSignature ? (
             <img
               className="w-[75px] h-[45px]"
-              src={signature}
+              src={existingSignature}
               alt="Signature"
             />
+          ) : (
+            <>
+              {signature && (
+                <img
+                  className="w-[75px] h-[45px]"
+                  src={signature}
+                  alt="Signature"
+                />
+              )}
+            </>
           )}
         </div>
       </div>

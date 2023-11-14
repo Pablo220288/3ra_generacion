@@ -56,7 +56,9 @@ export default function SettingsAdmin() {
       <div className="mt-2 flex justify-between">
         <div className="flex items-center gap-2">
           <h1>Administradores</h1>
-          {isAdmins && <Spinner color={"#0a5a7d"} />}
+          <div className="ml-3">
+            {isAdmins && <Spinner color={"#0a5a7d"} />}
+          </div>
         </div>
         <Link
           className="flex w-fit rounded-md text-white p-2 hover:bg-blue-900 select-none bg-indigo-500 text-center align-middle font-sans shadow-md shadow-indigo-500/20 transition-all hover:shadow-lg hover:shadow-indigo-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
@@ -122,7 +124,7 @@ export default function SettingsAdmin() {
                     <div
                       onClick={() => {
                         const url = "/api/admin/delete?id=" + admin._id;
-                        showAlert(admin.fullName, "delete", url);
+                        showAlert(admin.fullName, "delete", url, undefined, null, "admin");
                       }}
                       className="flex w-fit rounded-md text-white p-2 hover:bg-pink-600 select-none bg-pink-500 text-center align-middle font-sans shadow-md shadow-pink-500/20 transition-all cursor-pointer hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                     >

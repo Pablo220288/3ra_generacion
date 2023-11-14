@@ -3,7 +3,7 @@ import { Schema, model, models } from "mongoose";
 const OrderSchema = new Schema(
   {
     file: { type: Number, required: true },
-    date: { type: Date, required: true },
+    dateOrder: { type: Date, required: true },
     name: { type: String, required: true },
     description: { type: String, required: true },
     signature: { type: String, required: true },

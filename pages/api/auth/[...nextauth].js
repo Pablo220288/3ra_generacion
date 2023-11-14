@@ -34,7 +34,7 @@ export const authOptions = {
 
           return { name: admin.fullName };
         } catch (error) {
-          console.log("Error: ", error);
+          console.error("Error: ", error);
         }
       },
     }),

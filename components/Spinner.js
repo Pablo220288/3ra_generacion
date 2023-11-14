@@ -1,5 +1,5 @@
-import { PulseLoader } from "react-spinners";
+import { BarLoader } from "react-spinners";
 
 export default function Spinner({ color }) {
-  return <PulseLoader color={color} />;
+  return <BarLoader color={color} />;
 }

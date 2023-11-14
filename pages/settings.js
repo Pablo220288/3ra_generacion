@@ -6,7 +6,7 @@ export default function SettingsPage() {
   return (
     <Layout>
       <div className="flex items-center gap-2 mt-3">
-        <h4 className="block font-sans text-2xl leading-snug tracking-normal text-text-generation antialiased">
+        <h4 className="block font-sans text-lg md:text-xl leading-snug tracking-normal text-text-generation antialiased">
           Configuraciones
         </h4>
       </div>
