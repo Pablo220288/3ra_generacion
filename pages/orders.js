@@ -5,6 +5,13 @@ import Link from "next/link";
 import Spinner from "@/components/Spinner";
 import React, { useContext, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import {
+  Menu,
+  MenuHandler,
+  MenuList,
+  MenuItem,
+  Button,
+} from "@material-tailwind/react";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
@@ -87,6 +94,18 @@ export default function OrdersPage() {
                 <td>{order.owner.user}</td>
                 <td>
                   <div className="flex gap-2 justify-end mt-2">
+                    <div>
+                      <Menu>
+                        <MenuHandler>
+                          <Button className="">Menu</Button>
+                        </MenuHandler>
+                        <MenuList className="z-40">
+                          <MenuItem>Menu Item 1</MenuItem>
+                          <MenuItem>Menu Item 2</MenuItem>
+                          <MenuItem>Menu Item 3</MenuItem>
+                        </MenuList>
+                      </Menu>
+                    </div>
                     <Link
                       href={"/orders/visualize/" + order._id}
                       className="flex w-fit rounded-md text-white p-2 hover:bg-orange-600 select-none bg-orange-500 text-center align-middle font-sans shadow-md shadow-orange-500/20 transition-all cursor-pointer hover:shadow-lg hover:shadow-orange-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
