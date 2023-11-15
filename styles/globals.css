@@ -34,9 +34,18 @@ table.basic {
 
 table.basic thead tr td,
 table.basic thead tr th {
-  @apply text-sm text-gray-600 uppercase border-b border-gray-200 px-2 py-2;
+  @apply text-sm text-gray-600 uppercase border-b border-gray-200 px-2 py-2 mb-2;
 }
 
 table.basic tbody tr td {
-  @apply pl-3;
+  @apply pl-3 text-sm  pt-1;
 }
+
+hr {
+  width: 100%;
+  border: solid;
+  border-width: 1px;
+  border-color: #0d6c95;
+  margin-bottom: 20px;
+}
+

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 import OrderForm from "@/components/OrderForm";
+import Spinner from "@/components/Spinner";
 
 export default function EditOrderPage() {
   const [orderInfo, setOrderInfo] = useState(null);
@@ -12,20 +13,21 @@ export default function EditOrderPage() {
   const router = useRouter();
   const { id } = router.query;
 
-  useEffect(() => {
+
+  const getOrder = async () => {
     try {
       setIsOrders(true);
-      if (!id) {
-        return;
-      }
-      axios.get("/api/order/findbyid/?id=" + id).then((response) => {
-        setOrderInfo(response.data);
-      });
+      const response = await axios.get("/api/order/findbyid/?id=" + id);
+      setOrderInfo(response.data);
     } catch (error) {
-      console.error("Error find Order by id", error);
+      console.error("Error fetching Orders data:", error);
     } finally {
       setIsOrders(false);
     }
+  };
+
+  useEffect(() => {
+    getOrder();
   }, [id]);
 
   return (
@@ -38,12 +40,7 @@ export default function EditOrderPage() {
         <span className="text-text-generation">Editar Orden</span>
         <div className="ml-3">{isOrders && <Spinner color={"#0a5a7d"} />}</div>
       </div>
-      {orderInfo && (
-        <OrderForm
-          title={"Editar Orden"}
-          {...orderInfo}
-        />
-      )}
+      {orderInfo && <OrderForm title={"Editar Orden"} {...orderInfo} />}
     </Layout>
   );
 }
