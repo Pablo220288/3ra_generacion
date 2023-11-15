@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import Spinner from "@/components/Spinner";
 
 export default function StaffNew() {
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState(null);
   const [isOrders, setIsOrders] = useState(false);
 
   const getOrders = async () => {
@@ -35,7 +35,7 @@ export default function StaffNew() {
         <span className="text-text-generation">Nueva Orden</span>
         <div className="ml-3">{isOrders && <Spinner color={"#0a5a7d"} />}</div>
       </div>
-      {orders.length > 0 && (
+      {orders && (
         <OrderForm
           title={"Nueva Orden"}
           orders={orders}

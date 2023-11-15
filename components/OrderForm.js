@@ -40,13 +40,18 @@ export default function OrderForm({
   );
 
   const fileNumber = () => {
-    let max = 0;
-    for (let numero of orders) {
-      if (max < numero.file) max = numero.file;
+    if (orders.length > 0) {
+      let max = 0;
+      for (let numero of orders) {
+        if (max < numero.file) max = numero.file;
+      }
+      setFile(
+        "0".repeat(4 - (max + 1).toString().length) +
+          Math.abs(max + 1).toString()
+      );
+    } else {
+      setFile("0".repeat(4 - (1).toString().length) + Math.abs(1).toString());
     }
-    setFile(
-      "0".repeat(4 - (max + 1).toString().length) + Math.abs(max + 1).toString()
-    );
   };
 
   useEffect(() => {
