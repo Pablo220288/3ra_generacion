@@ -155,7 +155,7 @@ const PDF = ({ order }) => {
           >
             <View style={[styles.contentTitle, { flex: 1 }]}>
               <Text style={styles.title}>Técnico :</Text>
-              <Text style={styles.text}>{order.owner.fullName}</Text>
+              <Text style={styles.text}>{order.owner}</Text>
             </View>
             <View
               style={[
@@ -298,10 +298,20 @@ const PDF = ({ order }) => {
 };
 const OrderPDF = ({ orderInfo }) => {
   const [file, setFile] = useState(null);
-  const [dateOrder, setDateOrder] = useState(null);
+  const [description, setDescription] = useState("");
+  const [dateOrder, setDateOrder] = useState("");
+  const [name, setName] = useState("");
+  const [nameSignature, setNameSignature] = useState("");
+  const [owner, setOwner] = useState("");
+  const [signature, setSignature] = useState("");
 
   useEffect(() => {
+    setDescription(orderInfo.description);
     setDateOrder(new Date(orderInfo.dateOrder).toLocaleDateString());
+    setName(orderInfo.name);
+    setOwner(orderInfo.owner.fullName)
+    setNameSignature(orderInfo.nameSignature)
+    setSignature(orderInfo.signature)
     setFile(
       "0".repeat(4 - orderInfo.file.toString().length) +
         Math.abs(orderInfo.file).toString()
@@ -310,14 +320,12 @@ const OrderPDF = ({ orderInfo }) => {
 
   const order = {
     file,
-    description: orderInfo.description,
+    description,
     dateOrder,
-    name: orderInfo.name,
-    nameSignature: orderInfo.nameSignature,
-    owner: {
-      fullName: orderInfo.owner.fullName,
-    },
-    signature: orderInfo.signature,
+    name,
+    owner,
+    nameSignature,
+    signature,
   };
 
   return (
