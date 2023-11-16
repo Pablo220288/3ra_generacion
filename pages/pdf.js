@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   },
   signature: {
     width: "3cm",
-    height: "3cm"
+    height: "3cm",
   },
 });
 
@@ -297,13 +297,21 @@ const PDF = ({ order }) => {
   );
 };
 const OrderPDF = ({ orderInfo }) => {
-  
-  const order = {
-    file:
+  const [file, setFile] = useState(null);
+  const [dateOrder, setDateOrder] = useState(null);
+
+  useEffect(() => {
+    setDateOrder(new Date(orderInfo.dateOrder).toLocaleDateString());
+    setFile(
       "0".repeat(4 - orderInfo.file.toString().length) +
-      Math.abs(orderInfo.file).toString(),
+        Math.abs(orderInfo.file).toString()
+    );
+  }, []);
+
+  const order = {
+    file,
     description: orderInfo.description,
-    dateOrder: new Date(orderInfo.dateOrder).toLocaleDateString(),
+    dateOrder,
     name: orderInfo.name,
     nameSignature: orderInfo.nameSignature,
     owner: {
@@ -313,14 +321,18 @@ const OrderPDF = ({ orderInfo }) => {
   };
 
   return (
-    <PDFViewer
-      style={{
-        width: "100%",
-        height: "100vh",
-      }}
-    >
-      <PDF order={order} />
-    </PDFViewer>
+    <>
+      {file && (
+        <PDFViewer
+          style={{
+            width: "100%",
+            height: "100vh",
+          }}
+        >
+          <PDF order={order} />
+        </PDFViewer>
+      )}
+    </>
   );
 };
 export default OrderPDF;
