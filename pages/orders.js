@@ -1,17 +1,13 @@
 import axios from "axios";
-import { AlertContext } from "@/components/AlertContext";
 import Layout from "@/components/Layout";
 import Link from "next/link";
 import Spinner from "@/components/Spinner";
-import React, { useContext, useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import React, { useEffect, useState } from "react";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState(null);
   const [isOrders, setIsOrders] = useState(false);
 
-  const { showAlert, refresh } = useContext(AlertContext);
-  const { data: session } = useSession();
   const getOrders = async () => {
     try {
       setIsOrders(true);
@@ -27,10 +23,6 @@ export default function OrdersPage() {
   useEffect(() => {
     getOrders();
   }, []);
-
-  useEffect(() => {
-    getOrders();
-  }, [refresh]);
 
   return (
     <Layout>
@@ -76,7 +68,7 @@ export default function OrdersPage() {
                       <td>N°</td>
                       <td>Fecha</td>
                       <td>Cliente</td>
-                      <td>Emisor</td>
+                      <td>Técnico</td>
                       <td></td>
                     </tr>
                   </thead>
@@ -94,9 +86,38 @@ export default function OrdersPage() {
                           {order.name[0].toUpperCase() +
                             order.name.substring(1)}
                         </td>
-                        <td>{order.owner.user}</td>
+                        <td className="uppercase lg:hidden">
+                          {order.owner.user.slice(0, 2)}
+                        </td>
+                        <td className="hidden h-[45px] items-center lg:flex">
+                          {order.owner.user}
+                        </td>
                         <td>
-                          <div className="relative w-fit md:hidden">
+                          <Link
+                            href={"/orders/visualize/" + order._id}
+                            className="flex w-fit cursor-pointer select-none items-center gap-2 rounded-md p-2 text-start text-blue-gray-600 leading-tight outline-none transition-all hover:bg-orange-50 hover:bg-opacity-80 hover:text-orange-900 focus:bg-orange-50 focus:bg-opacity-80 focus:text-orange-900 active:bg-orange-50 active:bg-opacity-80 active:text-orange-900"
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth="2"
+                              stroke="currentColor"
+                              className="w-4 h-4"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
+                              />
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                              />
+                            </svg>
+                          </Link>
+                          {/*                           <div className="relative w-fit md:hidden">
                             <button
                               type="button"
                               className="peer flex w-fit cursor-pointer select-none items-center gap-2 rounded-md p-2 text-start text-blue-gray-600 leading-tight outline-none transition-all hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
@@ -306,7 +327,7 @@ export default function OrdersPage() {
                                 </button>
                               </>
                             )}
-                          </div>
+                          </div>*/}
                         </td>
                       </tr>
                     ))}

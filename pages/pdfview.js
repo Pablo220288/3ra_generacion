@@ -10,7 +10,6 @@ const InvoicePDF = dynamic(() => import("./pdf"), {
 });
 
 const View = ({ idOrder }) => {
-  console.log(idOrder)
   const [order, setOrder] = useState(null);
 
   const router = useRouter();
@@ -18,6 +17,7 @@ const View = ({ idOrder }) => {
 
   const getOrder = async () => {
     try {
+      if (!id) return;
       const response = await axios.get("/api/order/findbyid/?id=" + id);
       setOrder(response.data);
     } catch (error) {
