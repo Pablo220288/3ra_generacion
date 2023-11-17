@@ -17,7 +17,7 @@ export default async function handle(req, res) {
   
   const OrderDoc = await OrderModel.create({
     file: parseInt(file),
-    dateOrder,
+    dateOrder : new Date(dateOrder),
     name,
     description,
     signature,

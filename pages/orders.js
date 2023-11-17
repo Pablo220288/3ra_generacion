@@ -60,7 +60,6 @@ export default function OrdersPage() {
         <>
           {orders.length > 0 ? (
             <>
-              {" "}
               {orders.length > 0 && (
                 <table className="basic mt-4">
                   <thead>
@@ -80,7 +79,13 @@ export default function OrdersPage() {
                             Math.abs(order.file).toString()}
                         </td>
                         <td>
-                          {new Date(order.dateOrder).toLocaleDateString()}
+                          {new Date(order.dateOrder)
+                            .toISOString()
+                            .slice(0, 10)
+                            .match(/([^T]+)/)[0]
+                            .split("-")
+                            .reverse()
+                            .join("/")}
                         </td>
                         <td>
                           {order.name[0].toUpperCase() +
