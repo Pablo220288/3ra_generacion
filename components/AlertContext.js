@@ -53,7 +53,6 @@ export function AlertContextProvider({ children }) {
         setClassNameIcon(classIconUpdate);
         setClassNameButton(classButtonUpdate);
       }
-      
     } catch (error) {
       console.error("Error Show Alert:", error);
     } finally {
@@ -141,7 +140,7 @@ export function AlertContextProvider({ children }) {
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    strokeWidth={1.5}
+                    strokeWidth="2"
                     stroke="currentColor"
                     className="w-6 h-6"
                   >
@@ -157,7 +156,7 @@ export function AlertContextProvider({ children }) {
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    strokeWidth={1.5}
+                    strokeWidth="2"
                     stroke="currentColor"
                     className="w-4 h-4"
                   >
@@ -168,12 +167,28 @@ export function AlertContextProvider({ children }) {
                     />
                   </svg>
                 )}
+                {action === "add" && section === "categorie" && (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                    className="w-4 h-4"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 002.25-2.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v2.25A2.25 2.25 0 006 10.5zm0 9.75h2.25A2.25 2.25 0 0010.5 18v-2.25a2.25 2.25 0 00-2.25-2.25H6a2.25 2.25 0 00-2.25 2.25V18A2.25 2.25 0 006 20.25zm9.75-9.75H18a2.25 2.25 0 002.25-2.25V6A2.25 2.25 0 0018 3.75h-2.25A2.25 2.25 0 0013.5 6v2.25a2.25 2.25 0 002.25 2.25z"
+                    />
+                  </svg>
+                )}
                 {action === "delete" && (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    strokeWidth={1.5}
+                    strokeWidth="2"
                     stroke="currentColor"
                     className="w-4 h-4"
                   >
@@ -205,54 +220,60 @@ export function AlertContextProvider({ children }) {
               <div className="ml-3 text-sm font-normal">
                 {action === "add" && (
                   <span className="mb-1 text-sm font-semibold text-gray-900 dark:text-white">
-                    {section === "admin"
-                      ? "Agregar Administrador"
-                      : "Agregar Orden"}
+                    {section === "admin" && "Agregar Administrador"}
+                    {section === "admin" && "Agregar Orden"}
+                    {section === "categorie" && "Agregar Categoria"}
                   </span>
                 )}
                 {action === "delete" && (
                   <span className="mb-1 text-sm font-semibold text-gray-900 dark:text-white">
-                    {section === "admin"
-                      ? "Eliminar Administrador"
-                      : "Eliminar Orden"}
+                    {section === "admin" && "Eliminar Administrador"}
+                    {section === "order" && "Eliminar Orden"}
+                    {section === "categorie" && "Eliminar Categoria"}
                   </span>
                 )}
                 {action === "update" && (
                   <span className="mb-1 text-sm font-semibold text-gray-900 dark:text-white">
-                    {section === "admin"
-                      ? "Actualizar Administrador"
-                      : "Actualizar Orden"}
+                    {section === "admin" && "Actualizar Administrador"}
+                    {section === "order" && "Actualizar Orden"}
+                    {section === "categorie" && "Actualizar Categoria"}
                   </span>
                 )}
                 <div className="mb-2 text-sm font-normal">
                   {action === "add" && (
                     <span className="text-sm font-normal">
-                      {section === "admin"
-                        ? `Seguro que quiere agregar a ${file} como Administrador?`
-                        : `Seguro que quiere agregar la Orden ${file}?`}
+                      {section === "admin" &&
+                        `Seguro que quiere agregar a ${file} como Administrador?`}
+                      {section === "order" &&
+                        `Seguro que quiere agregar la Orden ${file}?`}
+                      {section === "categorie" &&
+                        `Seguro que quiere agregar la Categoria ${file}?`}
                     </span>
                   )}
                   {action === "delete" && (
                     <span className="text-sm font-normal">
-                      {section === "admin"
-                        ? `Seguro que quiere eliminar a ${file} como Administrador?`
-                        : `Seguro que quiere eliminar la Orden ${file}?`}
+                      {section === "admin" &&
+                        `Seguro que quiere eliminar a ${file} como Administrador?`}
+                      {section === "order" &&
+                        `Seguro que quiere eliminar la Orden ${file}?`}
+                      {section === "categorie" &&
+                        `Seguro que quiere eliminar la Categoria ${file}?`}
                     </span>
                   )}
                   {action === "update" && (
                     <span className="text-sm font-normal">
-                      {section === "admin"
-                        ? `Seguro que quiere actualizar al Administrador ${file}?`
-                        : `Seguro que quiere actualizar la Orden ${file}?`}
+                      {section === "admin" &&
+                        `Seguro que quiere actualizar al Administrador ${file}?`}
+                      {section === "order" &&
+                        `Seguro que quiere actualizar la Orden ${file}?`}
+                      {section === "categorie" &&
+                        `Seguro que quiere actualizar la Categoria ${file}?`}
                     </span>
                   )}
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <div
-                      onClick={actionAlert}
-                      className={classNameButton}
-                    >
+                    <div onClick={actionAlert} className={classNameButton}>
                       {action == "add" && "Agregar"}
                       {action == "delete" && "Eliminar"}
                       {action == "update" && "Actualizar"}

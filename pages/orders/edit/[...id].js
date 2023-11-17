@@ -17,6 +17,7 @@ export default function EditOrderPage() {
   const getOrder = async () => {
     try {
       setIsOrders(true);
+      if (!id) return;
       const response = await axios.get("/api/order/findbyid/?id=" + id);
       setOrderInfo(response.data);
     } catch (error) {

@@ -162,9 +162,9 @@ export default function OrderForm({
           </label>
         </div>
       </div>
-      <div className="h-[45px] mb-4 flex gap-6 items-end">
+      <div className="h-[45px] my-4 flex gap-6 items-end">
         {!existingSignature && (
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col items-center gap-2">
             <button
               className="block w-fit select-none rounded-lg bg-indigo-500 py-1 px-1 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-indigo-500/20 transition-all hover:shadow-lg hover:shadow-indigo-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
               type="button"
