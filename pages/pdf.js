@@ -367,12 +367,12 @@ const OrderPDF = ({ orderInfo }) => {
   useEffect(() => {
     setDescription(orderInfo.description);
     setDateOrder(new Date(orderInfo.dateOrder).toLocaleDateString());
-    setName(orderInfo.customer[0].name);
-    setAddress(orderInfo.customer[0].address);
-    setLocation(orderInfo.customer[0].location);
-    setPhone(orderInfo.customer[0].phone);
-    setEmail(orderInfo.customer[0].email);
-    setContact(orderInfo.customer[0].contact);
+    setName(orderInfo.customer.name);
+    setAddress(orderInfo.customer.address);
+    setLocation(orderInfo.customer.location);
+    setPhone(orderInfo.customer.phone);
+    setEmail(orderInfo.customer.email);
+    setContact(orderInfo.customer.contact);
     setOwner(orderInfo.owner.fullName);
     setNameSignature(orderInfo.nameSignature);
     setSignature(orderInfo.signature);
@@ -396,8 +396,7 @@ const OrderPDF = ({ orderInfo }) => {
     nameSignature,
     signature,
   };
-  console.log(orderInfo)
-
+  
   return (
     <>
       {file && (

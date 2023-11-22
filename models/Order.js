@@ -11,14 +11,20 @@ const OrderSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Admin",
     },
-    customer: new Schema({
-      name: { type: String, required: true },
-      address: { type: String, required: true },
-      location: { type: String, required: true },
-      phone: { type: String, required: true },
-      email: { type: String, required: true },
-      contact: { type: String, required: true },
-    }),
+    customer: new Schema(
+      {
+        name: { type: String, required: true },
+        address: { type: String, required: true },
+        location: { type: String, required: true },
+        phone: { type: String, required: true },
+        email: { type: String, required: true },
+        contact: { type: String, required: true },
+      },
+      {
+        timestamps: true,
+        versionKey: false,
+      }
+    ),
   },
   {
     timestamps: true,

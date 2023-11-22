@@ -185,7 +185,7 @@ export default function VisualizeOrderPage() {
                     Cliente:
                   </h4>
                   <span className="text-normal text-xs md:text-sm">
-                    {order.customer[0].name}
+                    {order.customer.name}
                   </span>
                 </div>
                 <div className="flex items-center gap-3 flex-1">
@@ -193,7 +193,7 @@ export default function VisualizeOrderPage() {
                     Dirección:
                   </h4>
                   <span className="text-normal text-xs md:text-sm">
-                    {order.customer[0].address}
+                    {order.customer.address}
                   </span>
                 </div>
               </div>
@@ -203,7 +203,7 @@ export default function VisualizeOrderPage() {
                     Localidad:
                   </h4>
                   <span className="text-normal text-xs md:text-sm">
-                    {order.customer[0].location}
+                    {order.customer.location}
                   </span>
                 </div>
                 <div className="flex items-center gap-3 flex-1">
@@ -211,7 +211,7 @@ export default function VisualizeOrderPage() {
                     Teléfono:
                   </h4>
                   <span className="text-normal text-xs md:text-sm">
-                    {order.customer[0].phone}
+                    {order.customer.phone}
                   </span>
                 </div>
               </div>
@@ -221,7 +221,7 @@ export default function VisualizeOrderPage() {
                     Email:
                   </h4>
                   <span className="text-normal text-xs md:text-sm">
-                    {order.customer[0].email}
+                    {order.customer.email}
                   </span>
                 </div>
                 <div className="flex items-center gap-3 flex-1">
@@ -229,7 +229,7 @@ export default function VisualizeOrderPage() {
                     Contacto:
                   </h4>
                   <span className="text-normal text-xs md:text-sm">
-                    {order.customer[0].contact}
+                    {order.customer.contact}
                   </span>
                 </div>
               </div>
