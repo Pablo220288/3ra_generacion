@@ -185,6 +185,11 @@ export default function OrderForm({
       toast.error("Complete todos los campos.");
       return;
     }
+    if (data.customer.address === "" || data.customer.name === "") {
+      toast.error("Complete todos los campos.");
+      return;
+    }
+    
     if (_id) {
       showAlert(file, "update", "/api/order/update", "/orders", data, "order");
     } else {
