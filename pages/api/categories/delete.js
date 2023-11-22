@@ -6,7 +6,6 @@ export default async function handle(req, res) {
   // await isAdminRequest(req, res)
 
   const { id } = req.query;
-  console.log(id);
   await CategoryModel.deleteOne({ _id: id });
   res.json(true);
 }

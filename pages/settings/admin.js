@@ -102,7 +102,7 @@ export default function SettingsAdmin() {
                   <div className="flex gap-2 justify-end mt-2">
                     <Link
                       href={"/settings/admin/edit/" + admin._id}
-                      className="flex w-fit rounded-md text-white p-2 hover:bg-blue-900 select-none bg-indigo-500 text-center align-middle font-sans shadow-md shadow-indigo-500/20 transition-all hover:shadow-lg hover:shadow-indigo-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                      className="flex w-fit cursor-pointer select-none items-center gap-2 rounded-md p-2 text-start text-blue-gray-600 leading-tight outline-none transition-all hover:bg-indigo-50 hover:bg-opacity-80 hover:text-indigo-900 focus:bg-indigo-50 focus:bg-opacity-80 focus:text-indigo-900 active:bg-indigo-50 active:bg-opacity-80 active:text-indigo-900"
                       data-ripple-light="true"
                       data-tooltip-target="tooltip-animation"
                     >
@@ -126,8 +126,8 @@ export default function SettingsAdmin() {
                         const url = "/api/admin/delete?id=" + admin._id;
                         showAlert(admin.fullName, "delete", url, undefined, null, "admin");
                       }}
-                      className="flex w-fit rounded-md text-white p-2 hover:bg-pink-600 select-none bg-pink-500 text-center align-middle font-sans shadow-md shadow-pink-500/20 transition-all cursor-pointer hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                    >
+                      className="flex w-fit cursor-pointer select-none items-center gap-2 rounded-md p-2 text-start text-blue-gray-600 leading-tight outline-none transition-all hover:bg-pink-50 hover:bg-opacity-80 hover:text-pink-900 focus:bg-pink-50 focus:bg-opacity-80 focus:text-pink-900 active:bg-pink-50 active:bg-opacity-80 active:text-pink-900"
+                      >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"

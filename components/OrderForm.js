@@ -12,7 +12,6 @@ export default function OrderForm({
   _id,
   file: existingFile,
   dateOrder: existingDateOrder,
-  name: existingName,
   description: existingDescription,
   signature: existingSignature,
   nameSignature: existingNameSignature,
@@ -35,7 +34,9 @@ export default function OrderForm({
       ? new Date(existingDateOrder).toISOString().slice(0, 10)
       : new Date().toISOString().slice(0, 10)
   );
-  const [name, setName] = useState(existingName || "");
+  const [name, setName] = useState(
+    existingCostumer === undefined ? "" : existingCostumer.name
+  );
   const [description, setDescription] = useState(existingDescription || "");
   const [nameSignature, setNameSignature] = useState(
     existingNameSignature || ""
@@ -45,11 +46,21 @@ export default function OrderForm({
   const [customers, setCustomers] = useState([]);
   const [customer, setCustomer] = useState(existingCostumer || "");
 
-  const [address, setAddress] = useState("");
-  const [location, setLocation] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [contact, setContact] = useState("");
+  const [address, setAddress] = useState(
+    existingCostumer === undefined ? "" : existingCostumer.address
+  );
+  const [location, setLocation] = useState(
+    existingCostumer === undefined ? "" : existingCostumer.location
+  );
+  const [phone, setPhone] = useState(
+    existingCostumer === undefined ? "" : existingCostumer.phone
+  );
+  const [email, setEmail] = useState(
+    existingCostumer === undefined ? "" : existingCostumer.email
+  );
+  const [contact, setContact] = useState(
+    existingCostumer === undefined ? "" : existingCostumer.contact
+  );
 
   const fileNumber = () => {
     if (orders.length > 0) {
@@ -169,7 +180,7 @@ export default function OrderForm({
         contact,
       },
     };
-   
+
     if (Object.values(data).some((info) => info === "")) {
       toast.error("Complete todos los campos.");
       return;
@@ -230,72 +241,77 @@ export default function OrderForm({
           </label>
         </div>
       </div>
-      <div className="mb-1 flex gap-6 ">
-        <div className="flex items-center">
-          <div onClick={selectParticular} className="inline-flex items-center">
-            <label
-              className="relative flex gap-2 cursor-pointer items-center rounded-full p-3"
-              htmlFor="particular"
-              data-ripple-dark="true"
+      {!existingCostumer && (
+        <div className="mb-1 flex gap-6 ">
+          <div className="flex items-center">
+            <div
+              onClick={selectParticular}
+              className="inline-flex items-center"
             >
-              <input
-                id="particular"
-                name="type"
-                type="radio"
-                className="before:content[''] peer relative h-3 w-3 cursor-pointer appearance-none rounded-full border border-blue-gray-200 text-pink-500 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-5 before:w-5 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-pink-500 checked:before:bg-pink-500 hover:before:opacity-10"
-                defaultChecked={showCustomer ? false : true}
-              />
-              <div className="pointer-events-none absolute top-2/4 left-3.5 -translate-y-2/4 text-pink-500 opacity-0 transition-opacity peer-checked:opacity-100">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-2 w-2"
-                  viewBox="0 0 16 16"
-                  fill="currentColor"
-                >
-                  <circle data-name="ellipse" cx="8" cy="8" r="8"></circle>
-                </svg>
-              </div>
               <label
-                className="mt-px cursor-pointer select-none font-light text-sm text-gray-400 peer-checked:text-gray-700"
+                className="relative flex gap-2 cursor-pointer items-center rounded-full p-3"
                 htmlFor="particular"
+                data-ripple-dark="true"
               >
-                Particular
-              </label>
-            </label>
-          </div>
-          <div onClick={selectCustomer} className="inline-flex items-center">
-            <label
-              className="relative flex gap-2 cursor-pointer items-center rounded-full p-3"
-              htmlFor="customer"
-              data-ripple-dark="true"
-            >
-              <input
-                id="customer"
-                name="type"
-                type="radio"
-                className="before:content[''] peer relative h-3 w-3 cursor-pointer appearance-none rounded-full border border-blue-gray-200 text-pink-500 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-5 before:w-5 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-pink-500 checked:before:bg-pink-500 hover:before:opacity-10"
-                defaultChecked={showCustomer}
-              />
-              <div className="pointer-events-none absolute top-2/4 left-3.5 -translate-y-2/4 text-pink-500 opacity-0 transition-opacity peer-checked:opacity-100">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-2 w-2"
-                  viewBox="0 0 16 16"
-                  fill="currentColor"
+                <input
+                  id="particular"
+                  name="type"
+                  type="radio"
+                  className="before:content[''] peer relative h-3 w-3 cursor-pointer appearance-none rounded-full border border-blue-gray-200 text-pink-500 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-5 before:w-5 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-pink-500 checked:before:bg-pink-500 hover:before:opacity-10"
+                  defaultChecked={showCustomer ? false : true}
+                />
+                <div className="pointer-events-none absolute top-2/4 left-3.5 -translate-y-2/4 text-pink-500 opacity-0 transition-opacity peer-checked:opacity-100">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-2 w-2"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <circle data-name="ellipse" cx="8" cy="8" r="8"></circle>
+                  </svg>
+                </div>
+                <label
+                  className="mt-px cursor-pointer select-none font-light text-sm text-gray-400 peer-checked:text-gray-700"
+                  htmlFor="particular"
                 >
-                  <circle data-name="ellipse" cx="8" cy="8" r="8"></circle>
-                </svg>
-              </div>
-              <label
-                className="mt-px cursor-pointer select-none font-light text-sm text-gray-400 peer-checked:text-gray-700"
-                htmlFor="customer"
-              >
-                Cliente
+                  Particular
+                </label>
               </label>
-            </label>
+            </div>
+            <div onClick={selectCustomer} className="inline-flex items-center">
+              <label
+                className="relative flex gap-2 cursor-pointer items-center rounded-full p-3"
+                htmlFor="customer"
+                data-ripple-dark="true"
+              >
+                <input
+                  id="customer"
+                  name="type"
+                  type="radio"
+                  className="before:content[''] peer relative h-3 w-3 cursor-pointer appearance-none rounded-full border border-blue-gray-200 text-pink-500 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-5 before:w-5 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-pink-500 checked:before:bg-pink-500 hover:before:opacity-10"
+                  defaultChecked={showCustomer}
+                />
+                <div className="pointer-events-none absolute top-2/4 left-3.5 -translate-y-2/4 text-pink-500 opacity-0 transition-opacity peer-checked:opacity-100">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-2 w-2"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <circle data-name="ellipse" cx="8" cy="8" r="8"></circle>
+                  </svg>
+                </div>
+                <label
+                  className="mt-px cursor-pointer select-none font-light text-sm text-gray-400 peer-checked:text-gray-700"
+                  htmlFor="customer"
+                >
+                  Cliente
+                </label>
+              </label>
+            </div>
           </div>
         </div>
-      </div>
+      )}
       {showCustomer === true ? (
         <div className="mb-4 flex gap-6 ">
           <div className="relative h-11 w-full min-w-[140px]">
@@ -408,6 +424,30 @@ export default function OrderForm({
         </div>
       </div>
       <div className="h-[45px] my-4 flex gap-6 items-end">
+        <div className="flex items-end gap-4 w-full justify-end pr-2">
+          <span className="text-[11px] font-normal leading-tight text-blue-gray-400">
+            Autorizó:
+          </span>
+          <div className="w-[75px] h-[45px]">
+            {existingSignature ? (
+              <img
+                className="w-[75px] h-[45px]"
+                src={existingSignature}
+                alt="Signature"
+              />
+            ) : (
+              <>
+                {signature && (
+                  <img
+                    className="w-[75px] h-[45px]"
+                    src={signature}
+                    alt="Signature"
+                  />
+                )}
+              </>
+            )}
+          </div>
+        </div>
         {!existingSignature && (
           <div className="flex flex-col items-center gap-2">
             <button
@@ -452,31 +492,9 @@ export default function OrderForm({
             </button>
           </div>
         )}
-        <div className="flex items-end gap-4">
-          <span className="text-[11px] font-normal leading-tight text-blue-gray-400">
-            Autorizado por:
-          </span>
-          {existingSignature ? (
-            <img
-              className="w-[75px] h-[45px]"
-              src={existingSignature}
-              alt="Signature"
-            />
-          ) : (
-            <>
-              {signature && (
-                <img
-                  className="w-[75px] h-[45px]"
-                  src={signature}
-                  alt="Signature"
-                />
-              )}
-            </>
-          )}
-        </div>
       </div>
-      <div className="mb-4 flex gap-6 ">
-        <div className="relative h-11 w-full min-w-[100px]">
+      <div className="mb-4 w-full flex justify-end gap-6 ">
+        <div className="relative h-11 w-2/4 min-w-[100px]">
           <input
             className="peer h-full w-full rounded-md border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-indigo-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
             placeholder=" "
@@ -484,7 +502,7 @@ export default function OrderForm({
             onChange={(ev) => setNameSignature(ev.target.value)}
           />
           <label className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.1] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-indigo-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-indigo-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:!border-indigo-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
-            Firma
+            Aclaración
           </label>
         </div>
       </div>

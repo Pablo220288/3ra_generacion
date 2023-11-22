@@ -308,7 +308,7 @@ export default function CategoriesPage() {
                   setProperties([]);
                 }}
               >
-                Cancel
+                Cancelar
               </button>
             </div>
           </form>
