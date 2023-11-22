@@ -9,6 +9,7 @@ export default function App({
 }) {
   return (
     <SessionProvider session={session}>
+      <head><link rel="icon" href="/assets/icono3rageneracion.png" sizes="any" /></head>
       <AlertContextProvider>
         <OrderContextProvider>
           <Component {...pageProps} />
