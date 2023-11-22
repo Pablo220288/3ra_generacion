@@ -8,21 +8,21 @@ export default async function handle(req, res) {
   const {
     file,
     dateOrder,
-    name,
     description,
     signature,
     nameSignature,
     owner,
+    customer
   } = req.body;
   
   const OrderDoc = await OrderModel.create({
     file: parseInt(file),
     dateOrder : new Date(dateOrder),
-    name,
     description,
     signature,
     nameSignature,
     owner,
+    customer,
   });
   res.json(OrderDoc);
 }

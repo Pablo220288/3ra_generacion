@@ -24,6 +24,8 @@ export default function OrdersPage() {
     getOrders();
   }, []);
 
+  console.log(orders)
+
   return (
     <Layout>
       <div className="mt-2 flex justify-between">
@@ -88,8 +90,8 @@ export default function OrdersPage() {
                             .join("/")}
                         </td>
                         <td>
-                          {order.name[0].toUpperCase() +
-                            order.name.substring(1)}
+                          {order.customer[0].name[0].toUpperCase() +
+                            order.customer[0].name.substring(1)}
                         </td>
                         <td className="uppercase lg:hidden">
                           {order.owner.user.slice(0, 2)}

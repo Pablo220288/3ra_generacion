@@ -103,15 +103,69 @@ const PDF = ({ order }) => {
               alignItems: "flex-start",
               flexDirection: "row",
               gap: "3mm",
+              marginBottom: "4mm"
             }}
           >
             <View style={[styles.contentTitle, { flex: 1 }]}>
               <Text style={styles.title}>Fecha :</Text>
               <Text style={styles.text}>{order.dateOrder}</Text>
             </View>
+          </View>
+
+          <View
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "flex-start",
+              flexDirection: "row",
+              gap: "3mm",
+              marginBottom: "2mm"
+            }}
+          >
             <View style={[styles.contentTitle, { flex: 1 }]}>
-              <Text style={styles.title}>Nombre :</Text>
+              <Text style={styles.title}>Cliente :</Text>
               <Text style={styles.text}>{order.name}</Text>
+            </View>
+            <View style={[styles.contentTitle, { flex: 1 }]}>
+              <Text style={styles.title}>Dirección :</Text>
+              <Text style={styles.text}>{order.address}</Text>
+            </View>
+          </View>
+          <View
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "flex-start",
+              flexDirection: "row",
+              gap: "3mm",
+              marginBottom: "2mm"
+            }}
+          >
+            <View style={[styles.contentTitle, { flex: 1 }]}>
+              <Text style={styles.title}>Localidad :</Text>
+              <Text style={styles.text}>{order.location}</Text>
+            </View>
+            <View style={[styles.contentTitle, { flex: 1 }]}>
+              <Text style={styles.title}>Teléfono :</Text>
+              <Text style={styles.text}>{order.phone}</Text>
+            </View>
+          </View>
+          <View
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "flex-start",
+              flexDirection: "row",
+              gap: "3mm",
+            }}
+          >
+            <View style={[styles.contentTitle, { flex: 1 }]}>
+              <Text style={styles.title}>Email :</Text>
+              <Text style={styles.text}>{order.email}</Text>
+            </View>
+            <View style={[styles.contentTitle, { flex: 1 }]}>
+              <Text style={styles.title}>Contacto :</Text>
+              <Text style={styles.text}>{order.contact}</Text>
             </View>
           </View>
           <View style={styles.line}></View>
@@ -301,6 +355,11 @@ const OrderPDF = ({ orderInfo }) => {
   const [description, setDescription] = useState("");
   const [dateOrder, setDateOrder] = useState("");
   const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
+  const [location, setLocation] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [contact, setContact] = useState("");
   const [nameSignature, setNameSignature] = useState("");
   const [owner, setOwner] = useState("");
   const [signature, setSignature] = useState("");
@@ -308,10 +367,15 @@ const OrderPDF = ({ orderInfo }) => {
   useEffect(() => {
     setDescription(orderInfo.description);
     setDateOrder(new Date(orderInfo.dateOrder).toLocaleDateString());
-    setName(orderInfo.name);
-    setOwner(orderInfo.owner.fullName)
-    setNameSignature(orderInfo.nameSignature)
-    setSignature(orderInfo.signature)
+    setName(orderInfo.customer[0].name);
+    setAddress(orderInfo.customer[0].address);
+    setLocation(orderInfo.customer[0].location);
+    setPhone(orderInfo.customer[0].phone);
+    setEmail(orderInfo.customer[0].email);
+    setContact(orderInfo.customer[0].contact);
+    setOwner(orderInfo.owner.fullName);
+    setNameSignature(orderInfo.nameSignature);
+    setSignature(orderInfo.signature);
     setFile(
       "0".repeat(4 - orderInfo.file.toString().length) +
         Math.abs(orderInfo.file).toString()
@@ -323,10 +387,16 @@ const OrderPDF = ({ orderInfo }) => {
     description,
     dateOrder,
     name,
+    address,
+    location,
+    phone,
+    email,
+    contact,
     owner,
     nameSignature,
     signature,
   };
+  console.log(orderInfo)
 
   return (
     <>

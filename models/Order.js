@@ -4,7 +4,6 @@ const OrderSchema = new Schema(
   {
     file: { type: Number, required: true },
     dateOrder: { type: Date, required: true },
-    name: { type: String, required: true },
     description: { type: String, required: true },
     signature: { type: String, required: true },
     nameSignature: { type: String, required: true },
@@ -12,6 +11,14 @@ const OrderSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Admin",
     },
+    customer: new Schema({
+      name: { type: String, required: true },
+      address: { type: String, required: true },
+      location: { type: String, required: true },
+      phone: { type: String, required: true },
+      email: { type: String, required: true },
+      contact: { type: String, required: true },
+    }),
   },
   {
     timestamps: true,
