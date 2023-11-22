@@ -45,8 +45,6 @@ export default function OrderForm({
   const [customers, setCustomers] = useState([]);
   const [customer, setCustomer] = useState(existingCostumer || "");
 
-  const [properties, setProperties] = useState(null);
-
   const [address, setAddress] = useState("");
   const [location, setLocation] = useState("");
   const [phone, setPhone] = useState("");
