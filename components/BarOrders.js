@@ -19,11 +19,11 @@ export default function BarOrders({ orders }) {
     <BarChart
       data={data}
       width={50}
-      height={150}
+      height={170}
       /* margin={{ top: 5, left: 10, right: 80, bottom: 5 }} */
     >
       <XAxis dataKey="name"/>
-      <Bar dataKey="count" fill="#0d6c95" label={{ position: "top" }} />
+      <Bar dataKey="count" fill="#0d94d2" label={{ position: "top" }} />
     </BarChart>
   );
 }

@@ -20,12 +20,12 @@ export default function BarTechnical({ orders }) {
   return (
     <BarChart
       data={data}
-      width={120}
-      height={150}
+      width={125}
+      height={170}
       margin={{ top: 30}}
     >
       <XAxis dataKey="name" />
-      <Bar dataKey="value" fill="#0d6c95">
+      <Bar dataKey="value" fill="#0d94d2">
         <LabelList data="name" position="top"/>
       </Bar>
     </BarChart>
