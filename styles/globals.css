@@ -49,3 +49,6 @@ hr {
   margin-bottom: 20px;
 }
 
+.recharts-text {
+  @apply text-xs;
+}
