@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     gap: "3mm",
   },
   title: {
-    fontSize: "3mm",
+    fontSize: "4mm",
     color: "#666666",
     fontStyle: "italic",
   },
@@ -51,8 +51,8 @@ const styles = StyleSheet.create({
     marginVertical: 30,
   },
   signature: {
-    width: "3cm",
-    height: "3cm",
+    width: "2cm",
+    height: "2cm",
   },
 });
 
@@ -88,8 +88,8 @@ const PDF = ({ order }) => {
           <View
             style={{
               width: "100%",
-              paddingTop: 60,
-              paddingBottom: 20,
+              paddingTop: 50,
+              paddingBottom: 50,
             }}
           >
             <Text wrap={false} style={{ textAlign: "left", color: "#0a5a7d" }}>
@@ -103,7 +103,7 @@ const PDF = ({ order }) => {
               alignItems: "flex-start",
               flexDirection: "row",
               gap: "3mm",
-              marginBottom: "4mm"
+              marginBottom: "4mm",
             }}
           >
             <View style={[styles.contentTitle, { flex: 1 }]}>
@@ -119,55 +119,67 @@ const PDF = ({ order }) => {
               alignItems: "flex-start",
               flexDirection: "row",
               gap: "3mm",
-              marginBottom: "2mm"
+              marginBottom: "2mm",
             }}
           >
             <View style={[styles.contentTitle, { flex: 1 }]}>
               <Text style={styles.title}>Cliente :</Text>
               <Text style={styles.text}>{order.name}</Text>
             </View>
-            <View style={[styles.contentTitle, { flex: 1 }]}>
-              <Text style={styles.title}>Dirección :</Text>
-              <Text style={styles.text}>{order.address}</Text>
-            </View>
+            {order.type === "Cliente" ? (
+              <View style={[styles.contentTitle, { flex: 1 }]}>
+                <Text style={styles.title}>Sucursal :</Text>
+                <Text style={styles.text}>{order.branch}</Text>
+              </View>
+            ) : (
+              <View style={[styles.contentTitle, { flex: 1 }]}>
+                <Text style={styles.title}>Dirección :</Text>
+                <Text style={styles.text}>{order.address}</Text>
+              </View>
+            )}
           </View>
-          <View
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "flex-start",
-              flexDirection: "row",
-              gap: "3mm",
-              marginBottom: "2mm"
-            }}
-          >
-            <View style={[styles.contentTitle, { flex: 1 }]}>
-              <Text style={styles.title}>Localidad :</Text>
-              <Text style={styles.text}>{order.location}</Text>
-            </View>
-            <View style={[styles.contentTitle, { flex: 1 }]}>
-              <Text style={styles.title}>Teléfono :</Text>
-              <Text style={styles.text}>{order.phone}</Text>
-            </View>
-          </View>
-          <View
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "flex-start",
-              flexDirection: "row",
-              gap: "3mm",
-            }}
-          >
-            <View style={[styles.contentTitle, { flex: 1 }]}>
-              <Text style={styles.title}>Email :</Text>
-              <Text style={styles.text}>{order.email}</Text>
-            </View>
-            <View style={[styles.contentTitle, { flex: 1 }]}>
-              <Text style={styles.title}>Contacto :</Text>
-              <Text style={styles.text}>{order.contact}</Text>
-            </View>
-          </View>
+          {order.type === "Particular" ? (
+            <>
+              <View
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "flex-start",
+                  flexDirection: "row",
+                  gap: "3mm",
+                  marginBottom: "2mm",
+                }}
+              >
+                <View style={[styles.contentTitle, { flex: 1 }]}>
+                  <Text style={styles.title}>Localidad :</Text>
+                  <Text style={styles.text}>{order.location}</Text>
+                </View>
+                <View style={[styles.contentTitle, { flex: 1 }]}>
+                  <Text style={styles.title}>Teléfono :</Text>
+                  <Text style={styles.text}>{order.phone}</Text>
+                </View>
+              </View>
+              <View
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "flex-start",
+                  flexDirection: "row",
+                  gap: "3mm",
+                }}
+              >
+                <View style={[styles.contentTitle, { flex: 1 }]}>
+                  <Text style={styles.title}>Email :</Text>
+                  <Text style={styles.text}>{order.email}</Text>
+                </View>
+                <View style={[styles.contentTitle, { flex: 1 }]}>
+                  <Text style={styles.title}>Contacto :</Text>
+                  <Text style={styles.text}>{order.contact}</Text>
+                </View>
+              </View>
+            </>
+          ) : null}
+
           <View style={styles.line}></View>
           <View
             style={{
@@ -217,7 +229,7 @@ const PDF = ({ order }) => {
                 { flex: 1, alignItems: "flex-end", justifyContent: "flex-end" },
               ]}
             >
-              <Text style={[styles.title, { paddingBottom: 2 }]}>Aprobó :</Text>
+              <Text style={[styles.title]}>Aprobó :</Text>
               <View
                 style={{
                   display: "flex",
@@ -355,6 +367,8 @@ const OrderPDF = ({ orderInfo }) => {
   const [description, setDescription] = useState("");
   const [dateOrder, setDateOrder] = useState("");
   const [name, setName] = useState("");
+  const [type, setType] = useState("");
+  const [branch, setBranch] = useState("");
   const [address, setAddress] = useState("");
   const [location, setLocation] = useState("");
   const [phone, setPhone] = useState("");
@@ -368,6 +382,8 @@ const OrderPDF = ({ orderInfo }) => {
     setDescription(orderInfo.description);
     setDateOrder(new Date(orderInfo.dateOrder).toLocaleDateString());
     setName(orderInfo.customer.name);
+    setType(orderInfo.customer.type);
+    setBranch(orderInfo.customer.branch);
     setAddress(orderInfo.customer.address);
     setLocation(orderInfo.customer.location);
     setPhone(orderInfo.customer.phone);
@@ -387,6 +403,8 @@ const OrderPDF = ({ orderInfo }) => {
     description,
     dateOrder,
     name,
+    type,
+    branch,
     address,
     location,
     phone,
@@ -396,7 +414,7 @@ const OrderPDF = ({ orderInfo }) => {
     nameSignature,
     signature,
   };
-  
+
   return (
     <>
       {file && (

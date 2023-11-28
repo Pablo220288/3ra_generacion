@@ -14,7 +14,9 @@ const OrderSchema = new Schema(
     customer: new Schema(
       {
         name: { type: String, required: true },
-        address: { type: String, required: true },
+        type: { type: String, required: true },
+        branch: { type: String },
+        address: { type: String },
         location: { type: String },
         phone: { type: String },
         email: { type: String },

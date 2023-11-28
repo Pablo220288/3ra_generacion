@@ -2,17 +2,12 @@ import React from "react";
 import {
   Bar,
   BarChart,
-  CartesianGrid,
-  Legend,
-  ResponsiveContainer,
-  Tooltip,
   XAxis,
-  YAxis,
 } from "recharts";
 
 export default function BarOrders({ orders }) {
   const data = [
-    { name: "Ordenes de Trabajo", mont: "Noviembre", count: orders.length },
+    { name: "Total", count: orders.length },
   ];
 
   return (

@@ -7,7 +7,7 @@ export default async function handle(req, res) {
 
   const data = await OrderModel.find({}, null, {
     sort: {
-      dateOrder: -1,
+      file: -1,
     },
   }).populate("owner");
   res.json(data);

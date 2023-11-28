@@ -24,7 +24,6 @@ export default function OrdersPage() {
     getOrders();
   }, []);
 
-
   return (
     <Layout>
       <div className="mt-2 flex justify-between">
@@ -62,68 +61,64 @@ export default function OrdersPage() {
           {orders.length > 0 ? (
             <>
               {orders.length > 0 && (
-                <table className="basic mt-4">
-                  <thead>
-                    <tr>
-                      <td>N°</td>
-                      <td>Fecha</td>
-                      <td>Cliente</td>
-                      <td>Técnico</td>
-                      <td></td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {orders.map((order) => (
-                      <tr key={order._id}>
-                        <td>
-                          {"0".repeat(4 - order.file.toString().length) +
-                            Math.abs(order.file).toString()}
-                        </td>
-                        <td>
-                          {new Date(order.dateOrder)
-                            .toISOString()
-                            .slice(0, 10)
-                            .match(/([^T]+)/)[0]
-                            .split("-")
-                            .reverse()
-                            .join("/")}
-                        </td>
-                        <td>
-                          {order.customer.name[0].toUpperCase() +
-                            order.customer.name.substring(1)}
-                        </td>
-                        <td className="uppercase lg:hidden">
-                          {order.owner.user.slice(0, 2)}
-                        </td>
-                        <td className="hidden h-[45px] items-center lg:flex">
-                          {order.owner.user}
-                        </td>
-                        <td>
-                          <Link
-                            href={"/orders/visualize/" + order._id}
-                            className="flex w-fit cursor-pointer select-none items-center gap-2 rounded-md p-2 text-start text-blue-gray-600 leading-tight outline-none transition-all hover:bg-orange-50 hover:bg-opacity-80 hover:text-orange-900 focus:bg-orange-50 focus:bg-opacity-80 focus:text-orange-900 active:bg-orange-50 active:bg-opacity-80 active:text-orange-900"
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth="2"
-                              stroke="currentColor"
-                              className="w-4 h-4"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
-                              />
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                              />
-                            </svg>
-                          </Link>
-                          {/*                           <div className="relative w-fit md:hidden">
+                <>
+                  <div className="w-full lg:hidden">
+                    <table className="basic mt-4">
+                      <thead>
+                        <tr>
+                          <td>Fecha</td>
+                          <td>Cliente / Sucursal</td>
+                          <td></td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {orders.map((order) => (
+                          <tr key={order._id}>
+                            <td>
+                              {new Date(order.dateOrder)
+                                .toISOString()
+                                .slice(0, 10)
+                                .match(/([^T]+)/)[0]
+                                .split("-")
+                                .reverse()
+                                .join("/")}
+                            </td>
+                            <td>
+                              {order.customer.name[0].toUpperCase() +
+                                order.customer.name.substring(1) +
+                                (order.customer.type === "Particular"
+                                  ? ""
+                                  : " / " +
+                                    (order.customer.branch === undefined
+                                      ? ""
+                                      : order.customer.branch))}
+                            </td>
+                            <td>
+                              <Link
+                                href={"/orders/visualize/" + order._id}
+                                className="flex w-fit cursor-pointer select-none items-center gap-2 rounded-md p-2 text-start text-blue-gray-600 leading-tight outline-none transition-all hover:bg-orange-50 hover:bg-opacity-80 hover:text-orange-900 focus:bg-orange-50 focus:bg-opacity-80 focus:text-orange-900 active:bg-orange-50 active:bg-opacity-80 active:text-orange-900"
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  strokeWidth="2"
+                                  stroke="currentColor"
+                                  className="w-4 h-4"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
+                                  />
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                  />
+                                </svg>
+                              </Link>
+                              {/*                           <div className="relative w-fit md:hidden">
                             <button
                               type="button"
                               className="peer flex w-fit cursor-pointer select-none items-center gap-2 rounded-md p-2 text-start text-blue-gray-600 leading-tight outline-none transition-all hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
@@ -334,11 +329,80 @@ export default function OrdersPage() {
                               </>
                             )}
                           </div>*/}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="w-full hidden lg:flex">
+                    <table className="basic mt-4">
+                      <thead>
+                        <tr>
+                          <td>N°</td>
+                          <td>Fecha</td>
+                          <td>Cliente</td>
+                          <td>Sucursal</td>
+                          <td>Técnico</td>
+                          <td></td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {orders.map((order) => (
+                          <tr key={order._id}>
+                            <td>
+                              {"0".repeat(4 - order.file.toString().length) +
+                                Math.abs(order.file).toString()}
+                            </td>
+                            <td>
+                              {new Date(order.dateOrder)
+                                .toISOString()
+                                .slice(0, 10)
+                                .match(/([^T]+)/)[0]
+                                .split("-")
+                                .reverse()
+                                .join("/")}
+                            </td>
+                            <td>
+                              {order.customer.name[0].toUpperCase() +
+                                order.customer.name.substring(1)}
+                            </td>
+                            <td className="whitespace-nowrap">
+                              {order.customer.branch}
+                            </td>
+                            <td>{order.owner.user}</td>
+                            <td>
+                              <Link
+                                href={"/orders/visualize/" + order._id}
+                                className="flex w-fit cursor-pointer select-none items-center gap-2 rounded-md p-2 text-start text-blue-gray-600 leading-tight outline-none transition-all hover:bg-orange-50 hover:bg-opacity-80 hover:text-orange-900 focus:bg-orange-50 focus:bg-opacity-80 focus:text-orange-900 active:bg-orange-50 active:bg-opacity-80 active:text-orange-900"
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  strokeWidth="2"
+                                  stroke="currentColor"
+                                  className="w-4 h-4"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
+                                  />
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                  />
+                                </svg>
+                              </Link>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </>
               )}
             </>
           ) : (

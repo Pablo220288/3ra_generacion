@@ -45,7 +45,7 @@ export default function Home() {
             {orders.length > 0 ? (
               <div className="w-full flex flex-col gap-6 items-start">
                 <div className="w-full flex flex-col gap-6 items-start md:flex-row lg:items-end">
-                  <div className="w-full flex gap-6 items-center justify-start md:justify-center">
+                  <div className="w-full flex gap-6 items-center justify-center">
                     <div className="flex flex-col items-end mb-2">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -68,8 +68,8 @@ export default function Home() {
                     </div>
                     <BarOrders orders={orders} />
                   </div>
-                  <div className="w-full flex flex-col lg:flex-row gap-6 items-start justify-start md:justify-center lg:items-center">
-                    <div className="flex flex-col items-end mb-2">
+                  <div className="w-full flex flex-col lg:flex-row gap-6 items-center justify-center lg:items-center">
+                    <div className="flex flex-col items-end mb-2 mr-20 lg:mr-0">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -93,7 +93,7 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="w-full flex flex-col gap-6 items-start md:flex-row ">
-                  <div className="w-full flex gap-5 items-center justify-start md:justify-center">
+                  <div className="w-full flex gap-5 items-center justify-center">
                     <div className="flex flex-col items-end mb-2">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

@@ -188,51 +188,66 @@ export default function VisualizeOrderPage() {
                     {order.customer.name}
                   </span>
                 </div>
-                <div className="flex items-center gap-3 flex-1">
-                  <h4 className="text-normal text-[11px] text-gray-600">
-                    Dirección:
-                  </h4>
-                  <span className="text-normal text-xs md:text-sm">
-                    {order.customer.address}
-                  </span>
-                </div>
+                {order.customer.type === "Cliente" ? (
+                  <div className="flex items-center gap-3 flex-1">
+                    <h4 className="text-normal text-[11px] text-gray-600">
+                      Sucursal:
+                    </h4>
+                    <span className="text-normal text-xs md:text-sm">
+                      {order.customer.branch}
+                    </span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-3 flex-1">
+                    <h4 className="text-normal text-[11px] text-gray-600">
+                      Dirección:
+                    </h4>
+                    <span className="text-normal text-xs md:text-sm">
+                      {order.customer.address}
+                    </span>
+                  </div>
+                )}
               </div>
-              <div className="w-full flex items-center gap-6 mb-4">
-                <div className="flex items-center gap-3 flex-1">
-                  <h4 className="text-normal text-[11px] text-gray-600">
-                    Localidad:
-                  </h4>
-                  <span className="text-normal text-xs md:text-sm">
-                    {order.customer.location}
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 flex-1">
-                  <h4 className="text-normal text-[11px] text-gray-600">
-                    Teléfono:
-                  </h4>
-                  <span className="text-normal text-xs md:text-sm">
-                    {order.customer.phone}
-                  </span>
-                </div>
-              </div>
-              <div className="w-full flex items-center gap-6 mb-4">
-                <div className="flex items-center gap-3 flex-1">
-                  <h4 className="text-normal text-[11px] text-gray-600">
-                    Email:
-                  </h4>
-                  <span className="text-normal text-xs md:text-sm">
-                    {order.customer.email}
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 flex-1">
-                  <h4 className="text-normal text-[11px] text-gray-600">
-                    Contacto:
-                  </h4>
-                  <span className="text-normal text-xs md:text-sm">
-                    {order.customer.contact}
-                  </span>
-                </div>
-              </div>
+              {order.customer.type === "Particular" ? (
+                <>
+                  <div className="w-full flex items-center gap-6 mb-4">
+                    <div className="flex items-center gap-3 flex-1">
+                      <h4 className="text-normal text-[11px] text-gray-600">
+                        Localidad:
+                      </h4>
+                      <span className="text-normal text-xs md:text-sm">
+                        {order.customer.location}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3 flex-1">
+                      <h4 className="text-normal text-[11px] text-gray-600">
+                        Teléfono:
+                      </h4>
+                      <span className="text-normal text-xs md:text-sm">
+                        {order.customer.phone}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="w-full flex items-center gap-6 mb-4">
+                    <div className="flex items-center gap-3 flex-1">
+                      <h4 className="text-normal text-[11px] text-gray-600">
+                        Email:
+                      </h4>
+                      <span className="text-normal text-xs md:text-sm">
+                        {order.customer.email}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3 flex-1">
+                      <h4 className="text-normal text-[11px] text-gray-600">
+                        Contacto:
+                      </h4>
+                      <span className="text-normal text-xs md:text-sm">
+                        {order.customer.contact}
+                      </span>
+                    </div>
+                  </div>
+                </>
+              ) : null}
               <hr />
               <div className="w-full flex items-center gap-6 mb-6">
                 <div className="flex items-end gap-3">
