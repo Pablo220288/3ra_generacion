@@ -68,9 +68,6 @@ export default function OrderForm({
     existingCostumer === undefined ? "" : existingCostumer.branch
   );
 
-  console.log(orderType);
-  console.log(branch);
-
   const fileNumber = () => {
     if (orders.length > 0) {
       let max = 0;

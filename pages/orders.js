@@ -3,10 +3,14 @@ import Layout from "@/components/Layout";
 import Link from "next/link";
 import Spinner from "@/components/Spinner";
 import React, { useEffect, useState } from "react";
+import FilterOrder from "@/components/FilterOrder";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState(null);
   const [isOrders, setIsOrders] = useState(false);
+  const [categories, setCategories] = useState(null);
+  const [customer, setCustomer] = useState("");
+  const [orderFilter, setOrderFilter] = useState([]);
 
   const getOrders = async () => {
     try {
@@ -20,9 +24,46 @@ export default function OrdersPage() {
     }
   };
 
+  const getOrdersFilter = async (customer) => {
+    try {
+      setIsOrders(true);
+      const response = await axios.get(
+        "/api/order/findcustomer/?customer=" + customer
+      );
+      setOrders(response.data);
+      setOrderFilter(response.data);
+    } catch (error) {
+      console.error("Error fetching Orders data:", error);
+    } finally {
+      setIsOrders(false);
+    }
+  };
+
   useEffect(() => {
     getOrders();
+
+    // Solicitamos las categorias
+    axios.get("/api/categories/find").then((result) => {
+      setCategories(
+        result.data.filter(
+          (order) => order.parent?._id === "65578ea1f981a6d14e94774e"
+        )
+      );
+    });
   }, []);
+
+  const selectCustomer = async (ev) => {
+    const customer = ev.target.value;
+    setCustomer(ev.target.value);
+
+    if (customer === "") {
+      setOrders(null);
+      getOrders();
+    } else {
+      setOrders(null);
+      getOrdersFilter(customer);
+    }
+  };
 
   return (
     <Layout>
@@ -56,6 +97,13 @@ export default function OrdersPage() {
           </svg>
         </Link>
       </div>
+      {categories && (
+        <FilterOrder
+          categories={categories}
+          customer={customer}
+          selectCustomer={selectCustomer}
+        />
+      )}
       {orders && (
         <>
           {orders.length > 0 ? (
