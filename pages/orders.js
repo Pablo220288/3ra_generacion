@@ -47,7 +47,15 @@ export default function OrdersPage() {
       setCategories(
         result.data.filter(
           (order) => order.parent?._id === "65578ea1f981a6d14e94774e"
-        )
+        ).sort(function (a, b) {
+          if (a.name > b.name) {
+            return 1;
+          }
+          if (a.name < b.name) {
+            return -1;
+          }
+          return 0;
+        })
       );
     });
   }, []);
