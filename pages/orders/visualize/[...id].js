@@ -17,6 +17,7 @@ export default function VisualizeOrderPage() {
 
   const { showAlert } = useContext(AlertContext);
   const { data: session } = useSession();
+  const idSuperAdmin = "65523c27e089088ecbaa2221";
 
   const getOrder = async () => {
     try {
@@ -74,7 +75,8 @@ export default function VisualizeOrderPage() {
                   />
                 </svg>
               </Link>
-              {order.owner._id === session.user.id && (
+              {session.user.id === idSuperAdmin ||
+              order.owner._id === session.user.id ? (
                 <>
                   <Link
                     href={"/orders/edit/" + order._id}
@@ -124,7 +126,7 @@ export default function VisualizeOrderPage() {
                     </svg>
                   </button>
                 </>
-              )}
+              ) : null}
             </div>
             <Link
               href={"/orders"}

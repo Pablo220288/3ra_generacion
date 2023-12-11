@@ -14,11 +14,12 @@ export default async function handle(req, res) {
     nameSignature,
     owner,
     _id,
+    customer,
   } = req.body;
 
   await OrderModel.updateOne(
     { _id },
-    { file, dateOrder, name, description, signature, nameSignature, owner }
+    { file, dateOrder, name, description, signature, nameSignature, owner, customer }
   );
   res.json(true);
 }

@@ -67,6 +67,9 @@ export default function OrderForm({
   const [branch, setBranch] = useState(
     existingCostumer === undefined ? "" : existingCostumer.branch
   );
+  // 11/12/23 Agregamos Propiedades a la Orden de trabajo segun cliente
+  const [properties, setProperties] = useState(null);
+  const [property, setProperty] = useState("");
 
   const fileNumber = () => {
     if (orders.length > 0) {
@@ -110,6 +113,8 @@ export default function OrderForm({
       // Dejamos en Blanco los campos del Cliente
       setBranch("");
       setCustomer("");
+      // Limpiamos las propiedades del Cliente
+      setProperties(null);
       // Disponemos el tipo de Orden
       setOrderType("Particular");
     } catch (error) {
@@ -124,9 +129,12 @@ export default function OrderForm({
     // Disponemos el tipo de Orden
     setOrderType("Cliente");
 
-    const customer = categories.find(
+    const customerProperties = categories.find(
       (customer) => customer._id === ev.target.value
     ).properties;
+
+    console.log(customerProperties);
+    setProperties(customerProperties.length > 0 ? customerProperties : null);
 
     setName(
       categories.find((customer) => customer._id === ev.target.value).name
@@ -212,6 +220,7 @@ export default function OrderForm({
     }
   };
 
+  console.log(property)
   return (
     <form onSubmit={saveOrder} className="mt-4 flex flex-col">
       <div>
@@ -474,6 +483,47 @@ export default function OrderForm({
           )}
         </>
       )}
+      <div className="mb-4 flex gap-6 ">
+        {properties &&
+          properties.map((prop, index) => (
+            <div
+              className="inline-flex items-center"
+              onClick={() => {
+                setProperty(prop.name);
+              }}
+            >
+              <label
+                className="relative flex gap-2 cursor-pointer items-center rounded-full p-3"
+                htmlFor={"propertie" + index}
+                data-ripple-dark="true"
+                key={prop.name}
+              >
+                <input
+                  id={"propertie" + index}
+                  name="propertie"
+                  type="radio"
+                  className="before:content[''] peer relative h-3 w-3 cursor-pointer appearance-none rounded-full border border-blue-gray-200 text-pink-500 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-5 before:w-5 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-pink-500 checked:before:bg-pink-500 hover:before:opacity-10"
+                />
+                <div className="pointer-events-none absolute top-2/4 left-3.5 -translate-y-2/4 text-pink-500 opacity-0 transition-opacity peer-checked:opacity-100">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-2 w-2"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <circle data-name="ellipse" cx="8" cy="8" r="8"></circle>
+                  </svg>
+                </div>
+                <label
+                  className="mt-px cursor-pointer select-none font-light text-sm text-gray-400 peer-checked:text-gray-700"
+                  htmlFor={"propertie" + index}
+                >
+                  {prop.name}
+                </label>
+              </label>
+            </div>
+          ))}
+      </div>
       <div className="mb-4 flex gap-6 ">
         <div className="relative w-full min-w-[200px]">
           <textarea
