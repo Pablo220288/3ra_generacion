@@ -35,7 +35,7 @@ export default function VisualizeOrderPage() {
   useEffect(() => {
     getOrder();
   }, [id]);
-
+  
   return (
     <Layout>
       <div className="mb-4 text-gray-400 text-sm flex items-center">
@@ -210,6 +210,21 @@ export default function VisualizeOrderPage() {
                   </div>
                 )}
               </div>
+              {order.customer.type === "Cliente" ? (
+                order.customer.property === "" ||
+                order.customer.property === undefined ? null : (
+                  <div className="w-full flex items-center gap-6 mb-4">
+                    <div className="flex items-center gap-3 flex-1">
+                      <h4 className="text-normal text-[11px] text-gray-600">
+                        Trabajo:
+                      </h4>
+                      <span className="text-normal text-xs md:text-sm">
+                        {order.customer.property}
+                      </span>
+                    </div>
+                  </div>
+                )
+              ) : null}
               {order.customer.type === "Particular" ? (
                 <>
                   <div className="w-full flex items-center gap-6 mb-4">

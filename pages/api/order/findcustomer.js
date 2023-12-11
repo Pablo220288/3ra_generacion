@@ -6,7 +6,11 @@ export default async function handle(req, res) {
   // await isAdminRequest(req, res)
 
   const { customer } = req.query;
-  const data = await OrderModel.find({ "customer.name": customer }).populate(
+  const data = await OrderModel.find({ "customer.name": customer }, null, {
+    sort: {
+      file: -1,
+    },
+  }).populate(
     "owner"
   );
   res.json(data);

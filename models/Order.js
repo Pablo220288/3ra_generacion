@@ -16,6 +16,7 @@ const OrderSchema = new Schema(
         name: { type: String, required: true },
         type: { type: String, required: true },
         branch: { type: String },
+        property: { type: String },
         address: { type: String },
         location: { type: String },
         phone: { type: String },

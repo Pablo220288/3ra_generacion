@@ -399,6 +399,7 @@ export default function OrdersPage() {
                           <td>Fecha</td>
                           <td>Cliente</td>
                           <td>Sucursal</td>
+                          <td>Trabajo</td>
                           <td>Técnico</td>
                           <td></td>
                         </tr>
@@ -425,6 +426,9 @@ export default function OrdersPage() {
                             </td>
                             <td className="whitespace-nowrap">
                               {order.customer.branch}
+                            </td>
+                            <td className="whitespace-nowrap">
+                              {order.customer.property}
                             </td>
                             <td>{order.owner.user}</td>
                             <td>
