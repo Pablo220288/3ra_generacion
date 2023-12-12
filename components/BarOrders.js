@@ -15,6 +15,7 @@ export default function BarOrders({ orders }) {
       data={data}
       width={50}
       height={170}
+      margin={{ top: 15 }} 
       /* margin={{ top: 5, left: 10, right: 80, bottom: 5 }} */
     >
       <XAxis dataKey="name"/>

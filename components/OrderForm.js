@@ -76,7 +76,6 @@ export default function OrderForm({
 
   const [dataCostumer, setDataCostumer] = useState([]);
 
-  console.log(dataCostumer);
   const fileNumber = () => {
     if (orders.length > 0) {
       let max = 0;
@@ -188,19 +187,18 @@ export default function OrderForm({
   useEffect(() => {
     if (categories.length === 0) {
       return;
+    } else if (existingCostumer.type === "Particular") {
+      return;
+    } else if (!existingCostumer) {
+      return;
     } else {
-      if (!existingCostumer) {
-        return;
-      } else {
-        setDataCostumer(
-          categories.find((category) => category.name === existingCostumer.name)
-            .properties
-        );
-      }
+      setDataCostumer(
+        categories.find((category) => category.name === existingCostumer.name)
+          .properties
+      );
     }
   }, [categories]);
-
-  console.log(dataCostumer);
+  console.log(existingCostumer);
   const saveOrder = async (ev) => {
     ev.preventDefault();
     const dataSignature = existingSignature ? existingSignature : signature;

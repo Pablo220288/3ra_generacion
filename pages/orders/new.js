@@ -28,7 +28,7 @@ export default function StaffNew() {
   return (
     <Layout>
       <div className="mb-4 text-gray-400 text-sm flex items-center">
-        <Link className="hover:text-generation" href={"/orders"}>
+        <Link className="hover:text-text-generation" href={"/orders"}>
           Ordenes de Trabajo{" "}
         </Link>
         <span>\ </span>

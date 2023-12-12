@@ -28,7 +28,7 @@ export default function BarOrdersAnnual({ orders }) {
 
   return (
 
-      <LineChart data={data} width={300} height={170}>
+      <LineChart data={data} width={300} height={170} margin={{ top: 15 }} >
         <XAxis dataKey="month" padding={{ left: 15, right: 15 }} />
         <Line
           type="monotone"
