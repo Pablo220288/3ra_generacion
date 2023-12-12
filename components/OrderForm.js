@@ -187,9 +187,9 @@ export default function OrderForm({
   useEffect(() => {
     if (categories.length === 0) {
       return;
-    } else if (existingCostumer.type === "Particular") {
-      return;
     } else if (!existingCostumer) {
+      return;
+    } else if (existingCostumer.type === "Particular") {
       return;
     } else {
       setDataCostumer(
