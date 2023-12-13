@@ -1,10 +1,12 @@
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { AlertContext } from "./AlertContext";
 import { useSession } from "next-auth/react";
+import Spinner from "./Spinner";
 
 export default function BudgetForm({
+  _id,
   title,
   budgets,
   file: existingFile,
@@ -33,6 +35,8 @@ export default function BudgetForm({
       ? items.reduce((acum, item) => acum + parseInt(item.total), 0)
       : "0"
   );
+  const [isDollar, setIsDollar] = useState(false);
+  const [dollar, setDollar] = useState(null);
   const [itmesTotalDollar, setItmesTotalDollar] = useState("0");
 
   const addItem = () => {
@@ -74,9 +78,42 @@ export default function BudgetForm({
 
   const saveBudget = (ev) => {
     ev.preventDefault();
+
+    const data = {
+      file,
+      dateBudget,
+      name,
+      items: items.map((i) => ({
+        name: i.name,
+        cant: i.cant,
+        price: i.price,
+        total: i.total,
+      })),
+      total: itemsTotal,
+      totalDollar: itmesTotalDollar,
+      owner: session.user.id,
+    };
+
+    if (data.name === "") {
+      toast.error("Ingrese un Nombre de Cliente.");
+      return;
+    }
+
+    if (items.length === 0) {
+      toast.error("No existen Productos.");
+      return;
+    }
+
+    if (_id) {
+      showAlert(file, "update", "/api/budget/update", "/budgets", data, "budget");
+    } else {
+      showAlert(file, "add", "/api/budget/create", "/budgets", data, "budget");
+    }
+    console.log(data);
   };
 
   const fileNumber = () => {
+    console.log(budgets.length)
     if (budgets.length > 0) {
       let max = 0;
       for (let numero of budgets) {
@@ -91,20 +128,36 @@ export default function BudgetForm({
     }
   };
 
+  const getDollar = async () => {
+    try {
+      /*       setIsDollar(true);
+         await axios.get("/api/dollar").then((result) => {
+         setDollar(result.data);
+        
+      });  */
+      setDollar({ d: "2023-12-12", v: 366.5 });
+    } catch (error) {
+      console.error("Error Fetch Dollar", error);
+    } finally {
+      setIsDollar(false);
+    }
+  };
+
   useEffect(() => {
     if (!existingFile) {
       fileNumber();
     }
+    getDollar();
   }, []);
 
   useEffect(() => {
     setItemsTotal(items.reduce((acum, item) => acum + item.total, 0));
-    /*     const totalDollar = fetch("https://api.estadisticasbcra.com/usd_of",{
-      headers:{
-        BEARER: process.env.TOKEN_BCRA
-      }
-    }) */
   }, [items]);
+
+  useEffect(() => {
+    if (dollar === null) return;
+    setItmesTotalDollar((itemsTotal / dollar.v).toFixed());
+  }, [itemsTotal]);
 
   return (
     <form onSubmit={saveBudget} className="mt-4 flex flex-col">
@@ -293,7 +346,16 @@ export default function BudgetForm({
           </span>
         </div>
       </div>
-      <div className="mb-4 flex justify-end gap-6 ">
+      <div className="mb-4 flex justify-end items-center gap-6 ">
+        <div className="flex justify-center items-center">
+          {isDollar && <Spinner color={"#0a5a7d"} dollar={true} />}
+        </div>
+        {dollar && (
+          <div className="flex flex-col items-start">
+            <span className="text-[10px] italic">Fecha : {dollar.d}</span>
+            <span className="text-[10px] italic">Cotización : {dollar.v}</span>
+          </div>
+        )}
         <div className="relative h-11 max-w-[100px] relative">
           <input
             className="peer h-full w-full rounded-md border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-3 pl-10 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-indigo-500 focus:border-t-transparent focus:outline-0 disabled:bg-blue-gray-50"

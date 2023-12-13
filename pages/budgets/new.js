@@ -1,6 +1,7 @@
 import BudgetForm from "@/components/BudgetForm";
 import Layout from "@/components/Layout";
 import Spinner from "@/components/Spinner";
+import axios from "axios";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
@@ -11,9 +12,8 @@ export default function BudgetsNew() {
   const getBudgets = async () => {
     try {
       setIsBudgets(true);
-/*       const response = await axios.get("/api/budget/find");
-      setBudgets(response.data); */
-      setBudgets([]);
+       const response = await axios.get("/api/budget/find");
+      setBudgets(response.data); 
     } catch (error) {
       console.error("Error fetching Budgets data:", error);
     } finally {
