@@ -5,7 +5,7 @@ export default async function handle(req, res) {
     url: "https://api.estadisticasbcra.com/usd_of",
     method: "GET",
     headers: {
-      Authorization: "BEARER " + process.env.TOKEN_BCRA_2,
+      Authorization: "BEARER " + process.env.TOKEN_BCRA,
     },
   };
 
