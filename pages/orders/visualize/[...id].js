@@ -56,7 +56,7 @@ export default function VisualizeOrderPage() {
           <div className="w-full flex items-center justify-between">
             <div className="flex gap-1 mb-4">
               <Link
-                href={"/pdfview?id=" + id}
+                href={"/pdfview?id=" + id + "&&type=order"}
                 className="flex w-fit cursor-pointer select-none items-center gap-2 rounded-md p-2 text-start text-blue-gray-600 leading-tight outline-none transition-all hover:bg-orange-50 hover:bg-opacity-80 hover:text-orange-900 focus:bg-orange-50 focus:bg-opacity-80 focus:text-orange-900 active:bg-orange-50 active:bg-opacity-80 active:text-orange-900"
                 target="_blank"
               >

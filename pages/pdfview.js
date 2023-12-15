@@ -5,34 +5,50 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-const InvoicePDF = dynamic(() => import("./pdf"), {
+const InvoicePDF = dynamic(() => import("./pdfOrder"), {
+  ssr: false,
+});
+const InvoicePDFBudget = dynamic(() => import("./pdfBudget"), {
   ssr: false,
 });
 
 const View = ({ idOrder }) => {
-  const [order, setOrder] = useState(null);
+  const [data, setData] = useState(null);
 
   const router = useRouter();
   const { id } = idOrder ? idOrder : router.query;
+  const { type } = router.query;
 
-  const getOrder = async () => {
+  const getData = async () => {
     try {
       if (!id) return;
-      const response = await axios.get("/api/order/findbyid/?id=" + id);
-      setOrder(response.data);
+
+      if (type === "budget") {
+        const response = await axios.get("/api/budget/findbyid/?id=" + id);
+        setData(response.data);
+      } else {
+        const response = await axios.get("/api/order/findbyid/?id=" + id);
+        setData(response.data);
+      }
     } catch (error) {
-      console.error("Error fetching Orders data:", error);
+      console.error("Error fetching data:", error);
     }
   };
 
   useEffect(() => {
-    getOrder();
+    getData();
   }, [id]);
 
   return (
     <>
-      {order ? (
-        <InvoicePDF orderInfo={order} />
+      {data ? (
+        <>
+          {type === "order" ? (
+            <InvoicePDF orderInfo={data} />
+          ) : (
+            <InvoicePDFBudget budgetInfo={data} />
+          )}
+        </>
       ) : (
         <div className="bg-backgroud-body w-screen h-screen flex flex-col items-center justify-center gap-2">
           <Logo />

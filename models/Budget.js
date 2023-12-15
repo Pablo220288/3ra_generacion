@@ -5,6 +5,7 @@ const BudgetSchema = new Schema(
     file: { type: Number, required: true },
     dateBudget: { type: Date, required: true },
     name: { type: String, required: true },
+    branch: { type: String },
     items: [{ type: Object }],
     total: { type: Number },
     totalDollar: { type: Number },
@@ -12,6 +13,7 @@ const BudgetSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Admin",
     },
+    gender: { type: String, required: true },
   },
   {
     timestamps: true,

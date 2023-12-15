@@ -4,6 +4,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { AlertContext } from "./AlertContext";
 import { useSession } from "next-auth/react";
 import Spinner from "./Spinner";
+import axios from "axios";
 
 export default function BudgetForm({
   _id,
@@ -12,6 +13,10 @@ export default function BudgetForm({
   file: existingFile,
   dateBudget: existingDateBudget,
   name: existingName,
+  items: existingItems,
+  itemsTotal: existingItemsTotal,
+  branch: existingBranch,
+  gender: existingGender,
 }) {
   const { showAlert } = useContext(AlertContext);
 
@@ -29,15 +34,19 @@ export default function BudgetForm({
       : new Date().toISOString().slice(0, 10)
   );
   const [name, setName] = useState(existingName || "");
-  const [items, setItems] = useState([]);
-  const [itemsTotal, setItemsTotal] = useState(
-    items.length > 0
-      ? items.reduce((acum, item) => acum + parseInt(item.total), 0)
-      : "0"
-  );
+  const [items, setItems] = useState(existingItems || []);
+  const [itemsTotal, setItemsTotal] = useState(existingItemsTotal || "0");
   const [isDollar, setIsDollar] = useState(false);
   const [dollar, setDollar] = useState(null);
   const [itmesTotalDollar, setItmesTotalDollar] = useState("0");
+
+  const [gender, setGender] = useState(existingGender || "Particular");
+  const [categories, setCategories] = useState([]);
+  const [customers, setCustomers] = useState([]);
+  const [showCustomer, setShowCustomer] = useState(
+    !existingGender ? false : existingGender === "Cliente" ? true : false
+  );
+  const [branch, setBranch] = useState(existingBranch || "");
 
   const addItem = () => {
     setItems((prev) => {
@@ -80,9 +89,11 @@ export default function BudgetForm({
     ev.preventDefault();
 
     const data = {
+      _id,
       file,
       dateBudget,
       name,
+      branch,
       items: items.map((i) => ({
         name: i.name,
         cant: i.cant,
@@ -92,6 +103,7 @@ export default function BudgetForm({
       total: itemsTotal,
       totalDollar: itmesTotalDollar,
       owner: session.user.id,
+      gender,
     };
 
     if (data.name === "") {
@@ -105,15 +117,20 @@ export default function BudgetForm({
     }
 
     if (_id) {
-      showAlert(file, "update", "/api/budget/update", "/budgets", data, "budget");
+      showAlert(
+        file,
+        "update",
+        "/api/budget/update",
+        "/budgets",
+        data,
+        "budget"
+      );
     } else {
       showAlert(file, "add", "/api/budget/create", "/budgets", data, "budget");
     }
-    console.log(data);
   };
 
   const fileNumber = () => {
-    console.log(budgets.length)
     if (budgets.length > 0) {
       let max = 0;
       for (let numero of budgets) {
@@ -130,12 +147,11 @@ export default function BudgetForm({
 
   const getDollar = async () => {
     try {
-      /*       setIsDollar(true);
-         await axios.get("/api/dollar").then((result) => {
-         setDollar(result.data);
-        
-      });  */
-      setDollar({ d: "2023-12-12", v: 366.5 });
+      setIsDollar(true);
+      await axios.get("/api/dollar").then((result) => {
+        setDollar(result.data);
+      });
+      /* setDollar({ d: "2023-12-13", v: 799.98 }); */
     } catch (error) {
       console.error("Error Fetch Dollar", error);
     } finally {
@@ -147,6 +163,9 @@ export default function BudgetForm({
     if (!existingFile) {
       fileNumber();
     }
+    axios.get("/api/categories/find").then((result) => {
+      setCategories(result.data);
+    });
     getDollar();
   }, []);
 
@@ -156,8 +175,41 @@ export default function BudgetForm({
 
   useEffect(() => {
     if (dollar === null) return;
-    setItmesTotalDollar((itemsTotal / dollar.v).toFixed());
+    setItmesTotalDollar((itemsTotal / dollar.v).toFixed(1));
   }, [itemsTotal]);
+
+  useEffect(() => {
+    if (dollar === null) return;
+    setItmesTotalDollar((itemsTotal / dollar.v).toFixed(1));
+  }, [dollar]);
+
+  const selectCustomer = () => {
+    try {
+      setCustomers(
+        categories.filter(
+          (order) => order.parent?._id === "65578ea1f981a6d14e94774e"
+        )
+      );
+    } catch (error) {
+      console.error("Error Customer Selected", error);
+    } finally {
+      setName("");
+      setGender("Cliente");
+      setShowCustomer(true);
+    }
+  };
+
+  const selectParticular = () => {
+    try {
+      // Limpiamos Campos del Formulario
+      setName("");
+      setGender("Particular");
+    } catch (error) {
+      console.error("Error Particular Selected", error);
+    } finally {
+      setShowCustomer(false);
+    }
+  };
 
   return (
     <form onSubmit={saveBudget} className="mt-4 flex flex-col">
@@ -208,19 +260,120 @@ export default function BudgetForm({
           </label>
         </div>
       </div>
-      <div className="mb-4 flex gap-6 ">
-        <div className="relative h-11 w-full min-w-[100px]">
-          <input
-            className="peer h-full w-full rounded-md border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-indigo-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
-            placeholder=" "
-            value={name}
-            onChange={(ev) => setName(ev.target.value)}
-          />
-          <label className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.1] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-indigo-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-indigo-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:!border-indigo-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
-            Nombre
-          </label>
+      <div className="mb-1 flex gap-6 ">
+        <div className="flex items-center">
+          <div onClick={selectParticular} className="inline-flex items-center">
+            <label
+              className="relative flex gap-2 cursor-pointer items-center rounded-full p-3"
+              htmlFor="particular"
+              data-ripple-dark="true"
+            >
+              <input
+                id="particular"
+                name="type"
+                type="radio"
+                className="before:content[''] peer relative h-3 w-3 cursor-pointer appearance-none rounded-full border border-blue-gray-200 text-pink-500 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-5 before:w-5 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-pink-500 checked:before:bg-pink-500 hover:before:opacity-10"
+                defaultChecked={gender === "Particular" ? true : false}
+              />
+              <div className="pointer-events-none absolute top-2/4 left-3.5 -translate-y-2/4 text-pink-500 opacity-0 transition-opacity peer-checked:opacity-100">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-2 w-2"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                >
+                  <circle data-name="ellipse" cx="8" cy="8" r="8"></circle>
+                </svg>
+              </div>
+              <label
+                className="mt-px cursor-pointer select-none font-light text-sm text-gray-400 peer-checked:text-gray-700"
+                htmlFor="particular"
+              >
+                Particular
+              </label>
+            </label>
+          </div>
+          <div onClick={selectCustomer} className="inline-flex items-center">
+            <label
+              className="relative flex gap-2 cursor-pointer items-center rounded-full p-3"
+              htmlFor="customer"
+              data-ripple-dark="true"
+            >
+              <input
+                id="customer"
+                name="type"
+                type="radio"
+                className="before:content[''] peer relative h-3 w-3 cursor-pointer appearance-none rounded-full border border-blue-gray-200 text-pink-500 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-5 before:w-5 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-pink-500 checked:before:bg-pink-500 hover:before:opacity-10"
+                defaultChecked={gender === "Cliente" ? true : false}
+              />
+              <div className="pointer-events-none absolute top-2/4 left-3.5 -translate-y-2/4 text-pink-500 opacity-0 transition-opacity peer-checked:opacity-100">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-2 w-2"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                >
+                  <circle data-name="ellipse" cx="8" cy="8" r="8"></circle>
+                </svg>
+              </div>
+              <label
+                className="mt-px cursor-pointer select-none font-light text-sm text-gray-400 peer-checked:text-gray-700"
+                htmlFor="customer"
+              >
+                Cliente
+              </label>
+            </label>
+          </div>
         </div>
       </div>
+      {showCustomer === true ? (
+        <div className="mb-4 flex gap-6 ">
+          <div className="relative h-11 w-full min-w-[140px]">
+            <select
+              value={name}
+              onChange={(ev) => {
+                setName(ev.target.value);
+              }}
+              className="peer h-full w-full rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 empty:!bg-red-500 focus:border-2 focus:border-indigo-500 focus:border-t-transparent focus:outline-0 focus:shadow-none disabled:border-0 disabled:bg-blue-gray-50"
+            >
+              <option value="">Seleccione al Cliente</option>
+              {customers?.map((c) => (
+                <option value={c.name} key={c._id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+            <label className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-indigo-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-indigo-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-indigo-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
+              Cliente
+            </label>
+          </div>
+          <div className="relative h-11 w-full min-w-[100px]">
+            <input
+              className="peer h-full w-full rounded-md border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-indigo-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+              placeholder=" "
+              value={branch}
+              onChange={(ev) => setBranch(ev.target.value)}
+            />
+            <label className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.1] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-indigo-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-indigo-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:!border-indigo-500 peer-disabled:text-blue-gray-500 peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
+              Sucursal
+            </label>
+          </div>
+        </div>
+      ) : (
+        <div className="mb-4 flex gap-6 ">
+          <div className="relative h-11 w-full min-w-[100px]">
+            <input
+              className="peer h-full w-full rounded-md border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-indigo-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+              placeholder=" "
+              value={name}
+              onChange={(ev) => setName(ev.target.value)}
+            />
+            <label className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.1] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-indigo-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-indigo-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:!border-indigo-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
+              Nombre
+            </label>
+          </div>
+        </div>
+      )}
       <h2 className="text-sm">Productos / Servicios</h2>
       {items.length > 0 &&
         items.map((item, index) => (
@@ -252,7 +405,7 @@ export default function BudgetForm({
                 className="peer h-full w-full rounded-md border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-indigo-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
                 placeholder=" "
                 type="text"
-                value={item.product}
+                value={item.name}
                 onChange={(ev) =>
                   handleItemNameChange(index, item, ev.target.value)
                 }

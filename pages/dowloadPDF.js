@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 
-const InvoicePDF = dynamic(() => import("./pdf"), {
+const InvoicePDF = dynamic(() => import("./pdfOrder"), {
   ssr: false,
 });
 

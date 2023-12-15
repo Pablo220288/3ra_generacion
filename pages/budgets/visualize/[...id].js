@@ -35,7 +35,6 @@ export default function VisualizeBudgetPage() {
   useEffect(() => {
     getBudget();
   }, [id]);
-
   return (
     <Layout>
       <div className="mb-4 text-gray-400 text-sm flex items-center">
@@ -56,7 +55,7 @@ export default function VisualizeBudgetPage() {
           <div className="w-full flex items-center justify-between">
             <div className="flex gap-1 mb-4">
               <Link
-                href={"/pdfview?id=" + id}
+                href={"/pdfview?id=" + id + "&&type=budget"}
                 className="flex w-fit cursor-pointer select-none items-center gap-2 rounded-md p-2 text-start text-blue-gray-600 leading-tight outline-none transition-all hover:bg-orange-50 hover:bg-opacity-80 hover:text-orange-900 focus:bg-orange-50 focus:bg-opacity-80 focus:text-orange-900 active:bg-orange-50 active:bg-opacity-80 active:text-orange-900"
                 target="_blank"
               >
@@ -79,7 +78,7 @@ export default function VisualizeBudgetPage() {
               budget.owner._id === session.user.id ? (
                 <>
                   <Link
-                    href={"/budget/edit/" + budget._id}
+                    href={"/budgets/edit/" + budget._id}
                     className="flex w-fit cursor-pointer select-none items-center gap-2 rounded-md p-2 text-start text-blue-gray-600 leading-tight outline-none transition-all hover:bg-indigo-50 hover:bg-opacity-80 hover:text-indigo-900 focus:bg-indigo-50 focus:bg-opacity-80 focus:text-indigo-900 active:bg-indigo-50 active:bg-opacity-80 active:text-indigo-900"
                     data-ripple-light="true"
                     data-tooltip-target="tooltip-animation"
@@ -188,18 +187,39 @@ export default function VisualizeBudgetPage() {
                   </span>
                 </div>
               </div>
-              <div className="w-full flex items-center gap-6 mb-4">
-                <div className="flex items-center gap-3 flex-1">
-                  <h4 className="text-normal text-[11px] text-gray-600">
-                    Cliente:
-                  </h4>
-                  <span className="text-normal text-xs md:text-sm">
-                    {budget.name}
-                  </span>
+              {budget.gender === "Cliente" ? (
+                <div className="w-full flex items-center gap-6 mb-4">
+                  <div className="flex items-center gap-3 flex-1">
+                    <h4 className="text-normal text-[11px] text-gray-600">
+                      Cliente:
+                    </h4>
+                    <span className="text-normal text-xs md:text-sm">
+                      {budget.name}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3 flex-1">
+                    <h4 className="text-normal text-[11px] text-gray-600">
+                      Sucursal:
+                    </h4>
+                    <span className="text-normal text-xs md:text-sm">
+                      {budget.branch}
+                    </span>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="w-full flex items-center gap-6 mb-4">
+                  <div className="flex items-center gap-3 flex-1">
+                    <h4 className="text-normal text-[11px] text-gray-600">
+                      Nombre:
+                    </h4>
+                    <span className="text-normal text-xs md:text-sm">
+                      {budget.name}
+                    </span>
+                  </div>
+                </div>
+              )}
               <hr />
-              <div className="w-full flex flex-col items-start gap-6 mb-6">
+              <div className="w-full flex flex-col items-start gap-4 mb-6">
                 <div className="flex items-end gap-3">
                   <h4 className="text-normal text-[11px] text-gray-600">
                     Productos / Servicios:
@@ -209,10 +229,10 @@ export default function VisualizeBudgetPage() {
                   <table className="basic">
                     <thead>
                       <tr>
-                        <td className="!text-xs">N°</td>
-                        <td className="!text-xs">Nombre</td>
-                        <td className="text-center !text-xs">Cant</td>
-                        <td className="text-end !text-xs">Total</td>
+                        <td className="!text-[10px]">N°</td>
+                        <td className="!text-[10px]">Nombre</td>
+                        <td className="text-center !text-[10px]">Cant</td>
+                        <td className="text-end !text-[10px]">Total</td>
                       </tr>
                     </thead>
                     <tbody>
@@ -223,7 +243,9 @@ export default function VisualizeBudgetPage() {
                             {item.name[0].toUpperCase() +
                               item.name.substring(1)}
                           </td>
-                          <td className="text-center !text-xs">{item.cant}</td>
+                          <td className="text-center !text-xs !pl-0">
+                            {item.cant}
+                          </td>
                           <td className="text-end !text-xs">${item.total}</td>
                         </tr>
                       ))}
@@ -245,7 +267,9 @@ export default function VisualizeBudgetPage() {
                   <h4 className="text-normal text-[9px] text-gray-600">
                     Total:
                   </h4>
-                  <div className="text-normal text-sm">USD {budget.totalDollar}</div>
+                  <div className="text-normal text-sm">
+                    USD {budget.totalDollar}
+                  </div>
                 </div>
               </div>
             </div>
@@ -253,7 +277,7 @@ export default function VisualizeBudgetPage() {
               <div className="w-full flex items-end justify-between mb-6">
                 <div className="flex items-center gap-3">
                   <h4 className="text-normal text-[11px] text-gray-600">
-                    Técnico:
+                    Vendedor:
                   </h4>
                   <span className="text-normal text-xs md:text-sm">
                     {budget.owner.fullName}

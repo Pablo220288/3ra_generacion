@@ -15,18 +15,12 @@ export default async function handle(req, res) {
     totalDollar,
     owner,
     gender,
+    _id,
   } = req.body;
 
-  const OrderDoc = await BudgetModel.create({
-    file: parseInt(file),
-    dateBudget: new Date(dateBudget),
-    name,
-    branch,
-    items,
-    total,
-    totalDollar: parseInt(totalDollar),
-    owner,
-    gender,
-  });
-  res.json(OrderDoc);
+  await BudgetModel.updateOne(
+    { _id },
+    { file, dateBudget, name, branch, items, total, totalDollar, owner, gender }
+  );
+  res.json(true);
 }

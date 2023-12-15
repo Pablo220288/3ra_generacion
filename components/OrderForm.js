@@ -197,7 +197,6 @@ export default function OrderForm({
       );
     }
   }, [categories]);
-  console.log(existingCostumer);
   const saveOrder = async (ev) => {
     ev.preventDefault();
     const dataSignature = existingSignature ? existingSignature : signature;
