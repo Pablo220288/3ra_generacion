@@ -151,7 +151,6 @@ export default function BudgetForm({
       await axios.get("/api/dollar").then((result) => {
         setDollar(result.data);
       });
-      /* setDollar({ d: "2023-12-13", v: 799.98 }); */
     } catch (error) {
       console.error("Error Fetch Dollar", error);
     } finally {
@@ -175,12 +174,12 @@ export default function BudgetForm({
 
   useEffect(() => {
     if (dollar === null) return;
-    setItmesTotalDollar((itemsTotal / dollar.v).toFixed(1));
+    setItmesTotalDollar((itemsTotal / dollar.venta).toFixed(1));
   }, [itemsTotal]);
 
   useEffect(() => {
     if (dollar === null) return;
-    setItmesTotalDollar((itemsTotal / dollar.v).toFixed(1));
+    setItmesTotalDollar((itemsTotal / dollar.venta).toFixed(1));
   }, [dollar]);
 
   const selectCustomer = () => {
@@ -198,7 +197,7 @@ export default function BudgetForm({
       setShowCustomer(true);
     }
   };
-
+  console.log(dollar);
   const selectParticular = () => {
     try {
       // Limpiamos Campos del Formulario
@@ -505,8 +504,12 @@ export default function BudgetForm({
         </div>
         {dollar && (
           <div className="flex flex-col items-start">
-            <span className="text-[10px] italic">Fecha : {dollar.d}</span>
-            <span className="text-[10px] italic">Cotización : {dollar.v}</span>
+            <span className="text-[10px] italic">
+              Fecha : {new Date(dollar.fechaActualizacion).toLocaleDateString()}
+            </span>
+            <span className="text-[10px] italic">
+              Cotización : USD {dollar.venta}
+            </span>
           </div>
         )}
         <div className="relative h-11 max-w-[100px] relative">
