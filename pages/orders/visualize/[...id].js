@@ -17,7 +17,7 @@ export default function VisualizeOrderPage() {
 
   const { showAlert } = useContext(AlertContext);
   const { data: session } = useSession();
-  const idSuperAdmin = "65523c27e089088ecbaa2221";
+ const idSuperAdmin = "65523c27e089088ecbaa2221";
 
   const getOrder = async () => {
     try {

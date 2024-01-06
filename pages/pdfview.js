@@ -12,11 +12,11 @@ const InvoicePDFBudget = dynamic(() => import("./pdfBudget"), {
   ssr: false,
 });
 
-const View = ({ idOrder }) => {
+const View = ({ idData }) => {
   const [data, setData] = useState(null);
 
   const router = useRouter();
-  const { id } = idOrder ? idOrder : router.query;
+  const { id } = idData ? idData : router.query;
   const { type } = router.query;
 
   const getData = async () => {
