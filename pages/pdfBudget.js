@@ -218,7 +218,7 @@ const PDF = ({ budget }) => {
             display: "flex",
             flexDirection: "column",
             alignItems: "flex-start",
-            gap: 10
+            gap: 10,
           }}
         >
           <View
@@ -251,8 +251,11 @@ const PDF = ({ budget }) => {
               </View>
             </View>
           </View>
-          <Text style={[styles.title, {fontSize: "2mm"}]}>Cotización sujeta a la variación del dolar oficial (tipo de cambio BNA). Al total de este presupuesto se le debe sumar el IVA.</Text>
-          <View style={[styles.line, { marginTop: 10}]}></View>
+          <Text style={[styles.title, { fontSize: "2mm" }]}>
+            Cotización sujeta a la variación del dolar oficial (tipo de cambio
+            BNA). Al total de este presupuesto se le debe sumar el IVA.
+          </Text>
+          <View style={[styles.line, { marginTop: 10 }]}></View>
           <View
             style={{
               width: "100%",
@@ -387,7 +390,15 @@ const BudgetPDF = ({ budgetInfo }) => {
       "0".repeat(4 - budgetInfo.file.toString().length) +
         Math.abs(budgetInfo.file).toString()
     );
-    setDateBudget(new Date(budgetInfo.dateBudget).toLocaleDateString());
+    setDateBudget(
+      new Date(budgetInfo.dateBudget)
+        .toISOString()
+        .slice(0, 10)
+        .match(/([^T]+)/)[0]
+        .split("-")
+        .reverse()
+        .join("/")
+    );
     setName(budgetInfo.name);
     setItems(budgetInfo.items);
     setGender(budgetInfo.gender);

@@ -39,6 +39,7 @@ const View = ({ idData }) => {
     getData();
   }, [id]);
 
+  console.log(data);
   return (
     <>
       {data ? (

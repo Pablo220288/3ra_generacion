@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
 });
 
 const PDF = ({ order }) => {
+  console.log(order.dateOrder);
   return (
     <Document>
       <Page style={styles.body} size={"A4"}>
@@ -380,7 +381,15 @@ const OrderPDF = ({ orderInfo }) => {
 
   useEffect(() => {
     setDescription(orderInfo.description);
-    setDateOrder(new Date(orderInfo.dateOrder).toLocaleDateString());
+    setDateOrder(
+      new Date(orderInfo.dateOrder)
+        .toISOString()
+        .slice(0, 10)
+        .match(/([^T]+)/)[0]
+        .split("-")
+        .reverse()
+        .join("/")
+    );
     setName(orderInfo.customer.name);
     setType(orderInfo.customer.type);
     setBranch(orderInfo.customer.branch);
