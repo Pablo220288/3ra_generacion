@@ -26,7 +26,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "column",
-    padding: 60,
+    paddingHorizontal: 60,
+    paddingVertical: 40,
     fontFamily: "Poppins",
   },
   contentTitle: {
@@ -77,25 +78,35 @@ const PDF = ({ order }) => {
           >
             <Image
               style={{
-                width: "6cm",
+                width: "5cm",
               }}
               src="https://static.wixstatic.com/media/ed9a86_fae1caa9740742d689844de75397e4c2~mv2.png/v1/fill/w_509,h_162,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/ed9a86_fae1caa9740742d689844de75397e4c2~mv2.png"
             />
-            <View style={styles.contentTitle}>
-              <Text style={styles.title}>Orden :</Text>
-              <Text style={styles.text}>{order.file}</Text>
-            </View>
           </View>
           <View
             style={{
               width: "100%",
-              paddingTop: 50,
-              paddingBottom: 50,
+              paddingTop: 20,
+              paddingBottom: 20,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexDirection: "row",
             }}
           >
-            <Text wrap={false} style={{ textAlign: "left", color: "#0a5a7d" }}>
+            <Text
+              wrap={false}
+              style={{
+                textAlign: "left",
+                color: "#0a5a7d",
+              }}
+            >
               ORDEN DE TRABAJO
             </Text>
+            <View style={styles.contentTitle}>
+              <Text style={styles.title}>Número :</Text>
+              <Text style={styles.text}>{order.file}</Text>
+            </View>
           </View>
           <View
             style={{
