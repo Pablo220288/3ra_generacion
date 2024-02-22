@@ -183,7 +183,9 @@ export default function OrderForm({
     });
   }, []);
 
-  useEffect(() => {
+  console.log(categories)
+  console.log(existingCostumer.name)
+/*   useEffect(() => {
     if (categories.length === 0) {
       return;
     } else if (!existingCostumer) {
@@ -196,7 +198,7 @@ export default function OrderForm({
           .properties
       );
     }
-  }, [categories]);
+  }, [categories]); */
   const saveOrder = async (ev) => {
     ev.preventDefault();
     const dataSignature = existingSignature ? existingSignature : signature;

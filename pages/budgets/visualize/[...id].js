@@ -17,7 +17,7 @@ export default function VisualizeBudgetPage() {
 
   const { showAlert } = useContext(AlertContext);
   const { data: session } = useSession();
-  const idSuperAdmin = "65523c27e089088ecbaa2221";
+  const idSuperAdmin = ["65523c27e089088ecbaa2221","65c38b878feae67710fab930"];
 
   const getBudget = async () => {
     try {
@@ -74,7 +74,7 @@ export default function VisualizeBudgetPage() {
                   />
                 </svg>
               </Link>
-              {session.user.id === idSuperAdmin ||
+              {idSuperAdmin.includes(session.user.id)||
               budget.owner._id === session.user.id ? (
                 <>
                   <Link

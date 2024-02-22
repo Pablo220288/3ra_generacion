@@ -21,7 +21,7 @@ export default function Nav({ show }) {
 
   const { data: session } = useSession();
 
-  const idSuperAdmin = "65523c27e089088ecbaa2221";
+  const idSuperAdmin = ["65523c27e089088ecbaa2221", "65c38b878feae67710fab930"];
 
   return (
     <aside
@@ -78,7 +78,7 @@ export default function Nav({ show }) {
           </svg>
           Ordenes de Trabajo
         </Link>
-        {session.user.id === idSuperAdmin ? (
+        {idSuperAdmin.includes(session.user.id) ? (
           <Link
             href={"/budgets"}
             className={

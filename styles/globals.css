@@ -38,7 +38,7 @@ table.basic thead tr th {
 }
 
 table.basic tbody tr td {
-  @apply pl-3 text-sm  pt-1;
+  @apply pl-3 text-sm  pt-1 ;
 }
 
 hr {

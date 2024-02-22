@@ -17,7 +17,7 @@ export default function VisualizeOrderPage() {
 
   const { showAlert } = useContext(AlertContext);
   const { data: session } = useSession();
- const idSuperAdmin = "65523c27e089088ecbaa2221";
+  const idSuperAdmin = ["65523c27e089088ecbaa2221", "65c38b878feae67710fab930"];
 
   const getOrder = async () => {
     try {
@@ -35,7 +35,7 @@ export default function VisualizeOrderPage() {
   useEffect(() => {
     getOrder();
   }, [id]);
-  
+
   return (
     <Layout>
       <div className="mb-4 text-gray-400 text-sm flex items-center">
@@ -75,7 +75,7 @@ export default function VisualizeOrderPage() {
                   />
                 </svg>
               </Link>
-              {session.user.id === idSuperAdmin ||
+              {idSuperAdmin.includes(session.user.id) ||
               order.owner._id === session.user.id ? (
                 <>
                   <Link
