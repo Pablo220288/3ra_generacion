@@ -197,7 +197,6 @@ export default function BudgetForm({
       setShowCustomer(true);
     }
   };
-  console.log(dollar);
   const selectParticular = () => {
     try {
       // Limpiamos Campos del Formulario

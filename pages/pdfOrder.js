@@ -42,14 +42,14 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
   },
   text: {
-    fontSize: "4mm",
+    fontSize: "3.5mm"
   },
   line: {
     width: "100%",
     border: "0.3mm",
     backgroundColor: "#0a5a7d",
     borderColor: "#0a5a7d",
-    marginVertical: 30,
+    marginVertical: 10,
   },
   signature: {
     width: "2cm",
@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
 });
 
 const PDF = ({ order }) => {
-  console.log(order.dateOrder);
   return (
     <Document>
       <Page style={styles.body} size={"A4"}>

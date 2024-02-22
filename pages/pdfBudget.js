@@ -26,7 +26,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "column",
-    padding: 60,
+    paddingHorizontal: 60,
+    paddingVertical: 40,
     fontFamily: "Poppins",
   },
   contentTitle: {
@@ -41,14 +42,14 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
   },
   text: {
-    fontSize: "4mm",
+    fontSize: "3.5mm",
   },
   line: {
     width: "100%",
     border: "0.3mm",
     backgroundColor: "#0a5a7d",
     borderColor: "#0a5a7d",
-    marginVertical: 30,
+    marginVertical: 10,
   },
   signature: {
     width: "2cm",
@@ -73,28 +74,34 @@ const PDF = ({ budget }) => {
               justifyContent: "space-between",
               flexDirection: "row",
             }}
+            fixed
           >
             <Image
               style={{
-                width: "6cm",
+                width: "5cm",
               }}
               src="https://static.wixstatic.com/media/ed9a86_fae1caa9740742d689844de75397e4c2~mv2.png/v1/fill/w_509,h_162,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/ed9a86_fae1caa9740742d689844de75397e4c2~mv2.png"
             />
-            <View style={styles.contentTitle}>
-              <Text style={styles.title}>Orden :</Text>
-              <Text style={styles.text}>{budget.file}</Text>
-            </View>
           </View>
           <View
             style={{
               width: "100%",
-              paddingTop: 50,
-              paddingBottom: 50,
+              paddingTop: 20,
+              paddingBottom: 20,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexDirection: "row",
             }}
+            fixed
           >
             <Text wrap={false} style={{ textAlign: "left", color: "#0a5a7d" }}>
               PRESUPUESTO
             </Text>
+            <View style={styles.contentTitle}>
+              <Text style={styles.title}>Número :</Text>
+              <Text style={styles.text}>{budget.file}</Text>
+            </View>
           </View>
           <View
             style={{
@@ -105,6 +112,7 @@ const PDF = ({ budget }) => {
               gap: "3mm",
               marginBottom: "4mm",
             }}
+            fixed
           >
             <View style={[styles.contentTitle, { flex: 1 }]}>
               <Text style={styles.title}>Fecha :</Text>
@@ -121,18 +129,27 @@ const PDF = ({ budget }) => {
               gap: "3mm",
               marginBottom: "2mm",
             }}
+            fixed
           >
             {budget.gender === "Cliente" ? (
-              <>
-                <View style={[styles.contentTitle, { flex: 1 }]}>
+              <View
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                }}
+              >
+                <View style={[styles.contentTitle]}>
                   <Text style={styles.title}>Cliente :</Text>
                   <Text style={styles.text}>{budget.name}</Text>
                 </View>
-                <View style={[styles.contentTitle, { flex: 1 }]}>
+                <View style={[styles.contentTitle]}>
                   <Text style={styles.title}>Sucursal :</Text>
                   <Text style={styles.text}>{budget.branch}</Text>
                 </View>
-              </>
+              </View>
             ) : (
               <View style={[styles.contentTitle, { flex: 1 }]}>
                 <Text style={styles.title}>Nombre:</Text>
@@ -140,8 +157,7 @@ const PDF = ({ budget }) => {
               </View>
             )}
           </View>
-          <View style={styles.line}></View>
-          <View style={{}}></View>
+          <View style={styles.line} fixed></View>
           <View
             style={{
               width: "100%",
@@ -151,7 +167,7 @@ const PDF = ({ budget }) => {
               gap: 20,
             }}
           >
-            <Text style={styles.title}>Productos / Servicios :</Text>
+            {/* <Text style={styles.title}>Productos / Servicios :</Text> */}
             <View
               style={{
                 width: "100%",
@@ -160,12 +176,10 @@ const PDF = ({ budget }) => {
                 alignItems: "center",
                 justifyContent: "space-between",
               }}
+              fixed
             >
-              <Text style={[styles.title, { flex: 1, textAlign: "center" }]}>
-                N°
-              </Text>
-              <Text style={[styles.title, { flex: 5, textAlign: "center" }]}>
-                Nombre
+              <Text style={[styles.title, { flex: 5, textAlign: "start" }]}>
+                Productos / Servicios
               </Text>
               <Text style={[styles.title, { flex: 2, textAlign: "center" }]}>
                 Cant
@@ -195,18 +209,23 @@ const PDF = ({ budget }) => {
                   }}
                   key={index}
                 >
-                  <Text style={[styles.text, { flex: 1, textAlign: "center" }]}>
-                    {index + 1}
-                  </Text>
-                  <Text style={[styles.text, { flex: 5, textAlign: "center" }]}>
+                  <Text style={[styles.text, { flex: 5, textAlign: "start" }]}>
                     {item.name}
                   </Text>
                   <Text style={[styles.text, { flex: 2, textAlign: "center" }]}>
                     {item.cant}
                   </Text>
-                  <Text style={[styles.text, { flex: 1, textAlign: "start" }]}>
-                    $ {item.total}
-                  </Text>
+                  {item.total === 0 ? (
+                    <Text
+                      style={[styles.text, { flex: 1, textAlign: "start" }]}
+                    ></Text>
+                  ) : (
+                    <Text
+                      style={[styles.text, { flex: 1, textAlign: "start" }]}
+                    >
+                      $ {item.total}
+                    </Text>
+                  )}
                 </View>
               ))}
             </View>
@@ -420,7 +439,6 @@ const BudgetPDF = ({ budgetInfo }) => {
     totalDollar,
   };
 
-  console.log(items);
   return (
     <>
       {file && (

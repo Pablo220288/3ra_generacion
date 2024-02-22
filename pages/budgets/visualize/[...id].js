@@ -17,7 +17,7 @@ export default function VisualizeBudgetPage() {
 
   const { showAlert } = useContext(AlertContext);
   const { data: session } = useSession();
-  const idSuperAdmin = ["65523c27e089088ecbaa2221","65c38b878feae67710fab930"];
+  const idSuperAdmin = ["65523c27e089088ecbaa2221", "65c38b878feae67710fab930"];
 
   const getBudget = async () => {
     try {
@@ -74,7 +74,7 @@ export default function VisualizeBudgetPage() {
                   />
                 </svg>
               </Link>
-              {idSuperAdmin.includes(session.user.id)||
+              {idSuperAdmin.includes(session.user.id) ||
               budget.owner._id === session.user.id ? (
                 <>
                   <Link
@@ -158,6 +158,7 @@ export default function VisualizeBudgetPage() {
             <div className="w-full flex flex-col items-center">
               <div className="w-full flex items-center justify-between">
                 <Logo />
+                {/* 22-02-2024 Se cambia al lado del titulo
                 <div className="flex items-center gap-3">
                   <h4 className="text-normal text-[11px] text-gray-600">
                     Presupuesto:
@@ -166,17 +167,28 @@ export default function VisualizeBudgetPage() {
                     {"0".repeat(4 - budget.file.toString().length) +
                       Math.abs(budget.file).toString()}
                   </span>
+                </div> */}
+              </div>
+              <div className="w-full flex items-center justify-between">
+                <h4 className="w-full text-left block mt-5 mb-5 font-sans text-sm md:text-lg leading-snug tracking-normal text-text-generation antialiased">
+                  PRESUPUESTO
+                </h4>
+                <div className="flex items-center gap-3">
+                  <h4 className="text-normal text-[11px] text-gray-600">
+                    Número:
+                  </h4>
+                  <span className="text-normal text-xs">
+                    {"0".repeat(4 - budget.file.toString().length) +
+                      Math.abs(budget.file).toString()}
+                  </span>
                 </div>
               </div>
-              <h4 className="w-full text-left block mt-8 mb-10 font-sans text-sm md:text-lg leading-snug tracking-normal text-text-generation antialiased">
-                PRESUPUESTO
-              </h4>
               <div className="w-full flex items-center gap-6 mb-4">
                 <div className="flex items-center gap-3">
                   <h4 className="text-normal text-[11px] text-gray-600">
                     Fecha:
                   </h4>
-                  <span className="text-normal text-xs md:text-sm">
+                  <span className="text-normal text-xs">
                     {new Date(budget.dateBudget)
                       .toISOString()
                       .slice(0, 10)
@@ -193,17 +205,13 @@ export default function VisualizeBudgetPage() {
                     <h4 className="text-normal text-[11px] text-gray-600">
                       Cliente:
                     </h4>
-                    <span className="text-normal text-xs md:text-sm">
-                      {budget.name}
-                    </span>
+                    <span className="text-normal text-xs">{budget.name}</span>
                   </div>
                   <div className="flex items-center gap-3 flex-1">
                     <h4 className="text-normal text-[11px] text-gray-600">
                       Sucursal:
                     </h4>
-                    <span className="text-normal text-xs md:text-sm">
-                      {budget.branch}
-                    </span>
+                    <span className="text-normal text-xs">{budget.branch}</span>
                   </div>
                 </div>
               ) : (
@@ -212,25 +220,23 @@ export default function VisualizeBudgetPage() {
                     <h4 className="text-normal text-[11px] text-gray-600">
                       Nombre:
                     </h4>
-                    <span className="text-normal text-xs md:text-sm">
-                      {budget.name}
-                    </span>
+                    <span className="text-normal text-xs">{budget.name}</span>
                   </div>
                 </div>
               )}
               <hr />
               <div className="w-full flex flex-col items-start gap-4 mb-6">
+                {/* 22-02-2024 se elimin titulo y numero del listado
                 <div className="flex items-end gap-3">
                   <h4 className="text-normal text-[11px] text-gray-600">
                     Productos / Servicios:
                   </h4>
-                </div>
+                </div> */}
                 <div className="w-full">
                   <table className="basic">
                     <thead>
                       <tr>
-                        <td className="!text-[10px]">N°</td>
-                        <td className="!text-[10px]">Nombre</td>
+                        <td className="!text-[10px]">Productos / Servicios</td>
                         <td className="text-center !text-[10px]">Cant</td>
                         <td className="text-end !text-[10px]">Total</td>
                       </tr>
@@ -238,7 +244,6 @@ export default function VisualizeBudgetPage() {
                     <tbody>
                       {budget.items.map((item, index) => (
                         <tr key={index}>
-                          <td className="!text-xs">{index + 1}</td>
                           <td className="!text-xs">
                             {item.name[0].toUpperCase() +
                               item.name.substring(1)}
@@ -246,7 +251,11 @@ export default function VisualizeBudgetPage() {
                           <td className="text-center !text-xs !pl-0">
                             {item.cant}
                           </td>
-                          <td className="text-end !text-xs">${item.total}</td>
+                          {item.total === 0 ? (
+                            <td className="text-end !text-xs"></td>
+                          ) : (
+                            <td className="text-end !text-xs">${item.total}</td>
+                          )}
                         </tr>
                       ))}
                     </tbody>
@@ -261,13 +270,13 @@ export default function VisualizeBudgetPage() {
                   <h4 className="text-normal text-[9px] text-gray-600">
                     Total:
                   </h4>
-                  <div className="text-normal text-sm">$ {budget.total}</div>
+                  <div className="text-normal text-xs">$ {budget.total}</div>
                 </div>
                 <div className="flex items-center gap-3">
                   <h4 className="text-normal text-[9px] text-gray-600">
                     Total:
                   </h4>
-                  <div className="text-normal text-sm">
+                  <div className="text-normal text-xs">
                     USD {budget.totalDollar}
                   </div>
                 </div>
@@ -279,7 +288,7 @@ export default function VisualizeBudgetPage() {
                   <h4 className="text-normal text-[11px] text-gray-600">
                     Vendedor:
                   </h4>
-                  <span className="text-normal text-xs md:text-sm">
+                  <span className="text-normal text-xs">
                     {budget.owner.fullName}
                   </span>
                 </div>
