@@ -11,6 +11,9 @@ const InvoicePDF = dynamic(() => import("./pdfOrder"), {
 const InvoicePDFBudget = dynamic(() => import("./pdfBudget"), {
   ssr: false,
 });
+const InvoicePDFCheckList = dynamic(() => import("./pdfCheckList"), {
+  ssr: false,
+});
 
 const View = ({ idData }) => {
   const [data, setData] = useState(null);
@@ -25,6 +28,9 @@ const View = ({ idData }) => {
 
       if (type === "budget") {
         const response = await axios.get("/api/budget/findbyid/?id=" + id);
+        setData(response.data);
+      } else if (type === "checkList") {
+        const response = await axios.get("/api/checkList/findbyid/?id=" + id);
         setData(response.data);
       } else {
         const response = await axios.get("/api/order/findbyid/?id=" + id);
@@ -45,6 +51,8 @@ const View = ({ idData }) => {
         <>
           {type === "order" ? (
             <InvoicePDF orderInfo={data} />
+          ) : type === "checkList" ? (
+            <InvoicePDFCheckList checkListInfo={data} />
           ) : (
             <InvoicePDFBudget budgetInfo={data} />
           )}
