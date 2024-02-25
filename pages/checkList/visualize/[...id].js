@@ -215,7 +215,77 @@ export default function VisualizecheckListsPage() {
                   </span>
                 </div>
               </div>
-              <div className="w-full flex flex-col items-start gap-4 mb-6">
+              <hr />
+              <div className="w-full flex-col items-start gap-4 mb-6 xl:hidden">
+                <div className="flex items-end gap-3">
+                  <h4 className="text-normal text-[11px] text-gray-600">
+                    Tareas:
+                  </h4>
+                </div>
+                <div className="w-full flex flex-col items-start gap-2 mt-2">
+                  {checkList.items.map((item, index) => (
+                    <div
+                      key={index}
+                      className=" w-full flex flex-col items-start gap-2 border border-transparent border-b-gray-400 pb-2"
+                    >
+                      <div className="w-full flex flex-row items-center gap-3">
+                        {item.check === "si" ? (
+                          <div className="flex items-center justify-center text-green-500">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={2}
+                              stroke="currentColor"
+                              className="w-4 h-4"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="m4.5 12.75 6 6 9-13.5"
+                              />
+                            </svg>
+                          </div>
+                        ) : (
+                          <div className="flex items-center justify-center text-red-600">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={2}
+                              stroke="currentColor"
+                              className="w-4 h-4"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M6 18 18 6M6 6l12 12"
+                              />
+                            </svg>
+                          </div>
+                        )}
+                        <div className="text-xs">{item.name}</div>
+                      </div>
+                      <div className="w-full flex flex-col items-start gap-3">
+                        <div className="text-xs flex flex-crow itmes-center gap-2">
+                          <div className="text-xs text-gray-600 uppercase">
+                            Obs:
+                          </div>
+                          <div className="text-xs">{item.observation}</div>
+                        </div>
+                        <div className="text-xs flex flex-crow itmes-center gap-2">
+                          <div className="text-xs text-gray-600 uppercase">
+                            N° Serie:
+                          </div>
+                        <div className="text-xs">{item.serialNumber}</div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="w-full flex-col items-start gap-4 mb-6 hidden xl:flex">
                 <div className="w-full">
                   <table className="basic">
                     <thead>
