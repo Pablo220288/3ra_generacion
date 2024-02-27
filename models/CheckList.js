@@ -6,8 +6,8 @@ const CheckListSchema = new Schema(
     dateCheckList: { type: Date, required: true },
     branch: { type: String, required: true },
     equipment: { type: String, required: true },
-    observations: { type: String, required: true },
-    mileage: { type: String, required: true },
+    observations: { type: String },
+    mileage: { type: String },
     items: [{ type: Object }],
     owner: {
       type: Schema.Types.ObjectId,

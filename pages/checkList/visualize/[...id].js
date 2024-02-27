@@ -246,7 +246,7 @@ export default function VisualizecheckListsPage() {
                               />
                             </svg>
                           </div>
-                        ) : (
+                        ) : item.check === "no" ? (
                           <div className="flex items-center justify-center text-red-600">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -263,6 +263,23 @@ export default function VisualizecheckListsPage() {
                               />
                             </svg>
                           </div>
+                        ) : (
+                          <div className="flex items-center justify-center text-orange-600">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={2}
+                              stroke="currentColor"
+                              className="w-4 h-4"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+                              />
+                            </svg>
+                          </div>
                         )}
                         <div className="text-xs">{item.name}</div>
                       </div>
@@ -271,13 +288,19 @@ export default function VisualizecheckListsPage() {
                           <div className="text-xs text-gray-600 uppercase">
                             Obs:
                           </div>
-                          <div className="text-xs">{item.observation}</div>
+                          <div className="text-xs">
+                            {item.check === "na"
+                              ? "No Aplica"
+                              : item.observation}
+                          </div>
                         </div>
                         <div className="text-xs flex flex-crow itmes-center gap-2">
                           <div className="text-xs text-gray-600 uppercase">
                             N° Serie:
                           </div>
-                        <div className="text-xs">{item.serialNumber}</div>
+                          <div className="text-xs">
+                            {item.check === "na" ? "--" : item.serialNumber}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -291,7 +314,7 @@ export default function VisualizecheckListsPage() {
                     <thead>
                       <tr>
                         <td className="!text-[10px]">Tareas</td>
-                        <td className="text-center !text-[10px]">Resultado</td>
+                        <td className="text-start !text-[10px]">Resultado</td>
                         <td className="text-center !text-[10px]">
                           Observaciones
                         </td>
@@ -308,9 +331,9 @@ export default function VisualizecheckListsPage() {
                             {item.name[0].toUpperCase() +
                               item.name.substring(1)}
                           </td>
-                          <td className="text-center !text-xs !pl-0 h-full">
+                          <td className="text-start !text-xs !pl-0 h-full">
                             {item.check === "si" ? (
-                              <div className="w-full flex items-center justify-center text-green-500">
+                              <div className="flex items-center justify-center text-green-500">
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
                                   fill="none"
@@ -326,8 +349,8 @@ export default function VisualizecheckListsPage() {
                                   />
                                 </svg>
                               </div>
-                            ) : (
-                              <div className="w-full flex items-center justify-center text-red-600">
+                            ) : item.check === "no" ? (
+                              <div className="flex items-center justify-center text-red-600">
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
                                   fill="none"
@@ -343,13 +366,32 @@ export default function VisualizecheckListsPage() {
                                   />
                                 </svg>
                               </div>
+                            ) : (
+                              <div className="flex items-center justify-center text-orange-600">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  strokeWidth={2}
+                                  stroke="currentColor"
+                                  className="w-4 h-4"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+                                  />
+                                </svg>
+                              </div>
                             )}
                           </td>
-                          <td className="text-center !text-xs !pl-0">
-                            {item.observation}
+                          <td className="text-start !text-xs !pl-0">
+                            {item.check === "na"
+                              ? "No Aplica"
+                              : item.observation}
                           </td>
                           <td className="text-center !text-xs !pl-0">
-                            {item.serialNumber}
+                            {item.check === "na" ? "--" : item.serialNumber}
                           </td>
                         </tr>
                       ))}

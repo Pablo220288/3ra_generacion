@@ -219,10 +219,11 @@ const PDF = ({ checkList }) => {
                         <Path
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          d="m4.5 12.75 6 6 9-13.5"                         />
+                          d="m4.5 12.75 6 6 9-13.5"
+                        />
                       </Svg>
                     </View>
-                  ) : (
+                  ) : item.check === "no" ? (
                     <View
                       style={{
                         flex: 1,
@@ -242,16 +243,43 @@ const PDF = ({ checkList }) => {
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           d="M6 18 18 6M6 6l12 12"
-                       />
+                        />
+                      </Svg>
+                    </View>
+                  ) : (
+                    <View
+                      style={{
+                        flex: 1,
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Svg
+                        viewBox="0 0 24 24"
+                        strokeWidth="3"
+                        stroke="#ffa500"
+                        style={{ width: "5mm", height: "5mm" }}
+                      >
+                        <Path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+                        />
                       </Svg>
                     </View>
                   )}
-
-                  <Text style={[styles.text, { flex: 2, textAlign: "center" }]}>
-                    {item.observation}
+                  <Text
+                    style={[
+                      styles.text,
+                      { flex: 2, textAlign: "start", paddingLeft: "2mm" },
+                    ]}
+                  >
+                    {item.check === "na" ? "No Aplica" : item.observation}
                   </Text>{" "}
                   <Text style={[styles.text, { flex: 2, textAlign: "center" }]}>
-                    {item.serialNumber}
+                    {item.check === "na" ? "--" : item.serialNumber}
                   </Text>
                 </View>
               ))}
