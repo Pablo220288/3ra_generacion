@@ -66,6 +66,7 @@ const PDF = ({ checkList }) => {
             width: "100%",
           }}
         >
+          {/* 27-02-2024 Se cambia disposision de Logo para incorporar firma
           <View
             style={{
               width: "100%",
@@ -82,7 +83,7 @@ const PDF = ({ checkList }) => {
               }}
               src="https://static.wixstatic.com/media/ed9a86_fae1caa9740742d689844de75397e4c2~mv2.png/v1/fill/w_509,h_162,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/ed9a86_fae1caa9740742d689844de75397e4c2~mv2.png"
             />
-          </View>
+          </View> */}
           <View
             style={{
               width: "100%",
@@ -95,6 +96,12 @@ const PDF = ({ checkList }) => {
             }}
             fixed
           >
+            <Image
+              style={{
+                width: "5cm",
+              }}
+              src="https://static.wixstatic.com/media/ed9a86_fae1caa9740742d689844de75397e4c2~mv2.png/v1/fill/w_509,h_162,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/ed9a86_fae1caa9740742d689844de75397e4c2~mv2.png"
+            />
             <Text wrap={false} style={{ textAlign: "left", color: "#0a5a7d" }}>
               Check List
             </Text>
@@ -305,18 +312,39 @@ const PDF = ({ checkList }) => {
             style={{
               width: "100%",
               display: "flex",
-              alignItems: "flex-start",
+              alignItems: "center",
+              justifyContent: "space-between",
               flexDirection: "row",
               gap: "3mm",
               marginTop: "2mm",
             }}
           >
-            <View style={[styles.contentTitle, { flex: 1 }]}>
+            <View style={[styles.contentTitle, { flex: 3, alignSelf: "flex-start" }]}>
               <Text style={styles.title}>Observaciones Generales :</Text>
               <Text style={styles.text}>{checkList.observations}</Text>
             </View>
+            <View
+              style={[
+                styles.contentTitle,
+                { flex: 1, alignItems: "flex-end", justifyContent: "flex-end" },
+              ]}
+            >
+              <Text style={[styles.title]}>Aprobó :</Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: 10,
+                }}
+              >
+                <Image style={styles.signature} src={checkList.signature} />
+                <Text style={styles.text}>{checkList.nameSignature}</Text>
+              </View>
+            </View>
           </View>
         </View>
+        {/* 27-02-2024 Se elimina pie de paguina para incorporar firma
         <View
           style={{
             width: "100%",
@@ -424,7 +452,7 @@ const PDF = ({ checkList }) => {
               </Text>
             </View>
           </View>
-        </View>
+        </View> */}
       </Page>
     </Document>
   );
@@ -437,6 +465,8 @@ const CheckListPDF = ({ checkListInfo }) => {
   const [items, setItems] = useState([]);
   const [observations, setObservations] = useState("");
   const [mileage, setMileage] = useState("");
+  const [signature, setSignature] = useState("");
+  const [nameSignature, setNameSignature] = useState("");
 
   useEffect(() => {
     setFile(
@@ -457,6 +487,8 @@ const CheckListPDF = ({ checkListInfo }) => {
     setItems(checkListInfo.items);
     setObservations(checkListInfo.observations);
     setMileage(checkListInfo.mileage);
+    setSignature(checkListInfo.signature);
+    setNameSignature(checkListInfo.nameSignature);
   }, []);
 
   const checkList = {
@@ -467,6 +499,8 @@ const CheckListPDF = ({ checkListInfo }) => {
     items,
     observations,
     mileage,
+    nameSignature,
+    signature,
   };
 
   return (

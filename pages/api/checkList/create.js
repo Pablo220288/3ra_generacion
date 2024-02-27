@@ -13,6 +13,8 @@ export default async function handle(req, res) {
     items,
     observations,
     mileage,
+    signature,
+    nameSignature,
     owner,
   } = req.body;
 
@@ -24,6 +26,8 @@ export default async function handle(req, res) {
     items,
     observations,
     mileage,
+    signature,
+    nameSignature,
     owner,
   });
   res.json(CheckListDoc);

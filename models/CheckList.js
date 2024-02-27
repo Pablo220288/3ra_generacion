@@ -9,6 +9,8 @@ const CheckListSchema = new Schema(
     observations: { type: String },
     mileage: { type: String },
     items: [{ type: Object }],
+    signature: { type: String, required: true },
+    nameSignature: { type: String, required: true },
     owner: {
       type: Schema.Types.ObjectId,
       ref: "Admin",

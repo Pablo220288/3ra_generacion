@@ -1,5 +1,5 @@
 import { AlertContextProvider } from "@/components/AlertContext";
-import { OrderContextProvider } from "@/components/OrderContext";
+import { SignatureContextProvider } from "@/components/SignatureContext";
 import "@/styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
@@ -24,9 +24,9 @@ export default function App({
         />
       </Head>
       <AlertContextProvider>
-        <OrderContextProvider>
+        <SignatureContextProvider>
           <Component {...pageProps} />
-        </OrderContextProvider>
+        </SignatureContextProvider>
       </AlertContextProvider>
     </SessionProvider>
   );

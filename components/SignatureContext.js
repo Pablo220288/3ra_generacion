@@ -1,9 +1,9 @@
 import { createContext, useRef, useState } from "react";
 import SignatureCanvas from "react-signature-canvas";
 
-export const OrderContext = createContext({});
+export const SignatureContext = createContext({});
 
-export function OrderContextProvider({ children }) {
+export function SignatureContextProvider({ children }) {
   const [signatureShow, setSignatureShow] = useState(false);
   const [signature, setSignature] = useState("");
 
@@ -32,7 +32,7 @@ export function OrderContextProvider({ children }) {
   };
 
   return (
-    <OrderContext.Provider
+    <SignatureContext.Provider
       value={{
         showSignature,
         signature,
@@ -139,6 +139,6 @@ export function OrderContextProvider({ children }) {
         </div>
       )}
       {children}
-    </OrderContext.Provider>
+    </SignatureContext.Provider>
   );
 }

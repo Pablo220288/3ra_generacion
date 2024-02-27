@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { OrderContext } from "./OrderContext";
+import { SignatureContext } from "./SignatureContext";
 import { AlertContext } from "./AlertContext";
 import { useSession } from "next-auth/react";
 import axios from "axios";
@@ -17,7 +17,8 @@ export default function OrderForm({
   nameSignature: existingNameSignature,
   customer: existingCostumer,
 }) {
-  const { showSignature, signature, setSignature } = useContext(OrderContext);
+  const { showSignature, signature, setSignature } =
+    useContext(SignatureContext);
 
   const { showAlert } = useContext(AlertContext);
 
@@ -183,7 +184,7 @@ export default function OrderForm({
     });
   }, []);
 
-   useEffect(() => {
+  useEffect(() => {
     if (categories.length === 0) {
       return;
     } else if (!existingCostumer) {
@@ -196,7 +197,7 @@ export default function OrderForm({
           .properties
       );
     }
-  }, [categories]); 
+  }, [categories]);
   const saveOrder = async (ev) => {
     ev.preventDefault();
     const dataSignature = existingSignature ? existingSignature : signature;

@@ -419,6 +419,23 @@ export default function VisualizecheckListsPage() {
                   </span>
                 </div>
               </div>
+              <div className="w-full flex items-center justify-end gap-6 mb-4">
+                <div className="flex items-end gap-3">
+                  <h4 className="text-normal text-[11px] text-gray-600">
+                    Aprobó:
+                  </h4>
+                  <div className="flex flex-col items-center gap-2">
+                    <img
+                      className="w-[75px] h-[45px]"
+                      src={checkList.signature}
+                      alt={checkList.nameSignature}
+                    />
+                    <span className="text-normal text-xs">
+                      {checkList.nameSignature}
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

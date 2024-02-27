@@ -13,6 +13,8 @@ export default async function handle(req, res) {
     items,
     observations,
     mileage,
+    signature,
+    nameSignature,
     owner,
     _id,
   } = req.body;
@@ -27,6 +29,8 @@ export default async function handle(req, res) {
       items,
       observations,
       mileage,
+      signature,
+      nameSignature,
       owner,
     }
   );
