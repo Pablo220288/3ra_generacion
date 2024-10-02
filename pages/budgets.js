@@ -151,7 +151,7 @@ export default function budgets() {
                         </button>
                         <div className="flex items-center gap-2">
                           <button
-                            class={
+                            className={
                               budgets.prevPage === null
                                 ? "hidden"
                                 : "relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
@@ -161,7 +161,7 @@ export default function budgets() {
                               setPage(budgets.prevPage);
                             }}
                           >
-                            <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                            <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                               {budgets.prevPage}
                             </span>
                           </button>
@@ -174,7 +174,7 @@ export default function budgets() {
                             </span>
                           </button>
                           <button
-                            class={
+                            className={
                               budgets.nextPage === null
                                 ? "hidden"
                                 : "relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
@@ -184,7 +184,7 @@ export default function budgets() {
                               setPage(budgets.nextPage);
                             }}
                           >
-                            <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                            <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                               {budgets.nextPage}
                             </span>
                           </button>
@@ -316,7 +316,7 @@ export default function budgets() {
                               setPage(1);
                             }}
                           >
-                            <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                            <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                               1
                             </span>
                           </button>
@@ -332,7 +332,7 @@ export default function budgets() {
                             ...
                           </span>
                           <button
-                            class={
+                            className={
                               budgets.prevPage === null
                                 ? "hidden"
                                 : "relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
@@ -342,7 +342,7 @@ export default function budgets() {
                               setPage(budgets.prevPage);
                             }}
                           >
-                            <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                            <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                               {budgets.prevPage}
                             </span>
                           </button>
@@ -355,7 +355,7 @@ export default function budgets() {
                             </span>
                           </button>
                           <button
-                            class={
+                            className={
                               budgets.nextPage === null
                                 ? "hidden"
                                 : "relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
@@ -365,7 +365,7 @@ export default function budgets() {
                               setPage(budgets.nextPage);
                             }}
                           >
-                            <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                            <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                               {budgets.nextPage}
                             </span>
                           </button>
@@ -393,7 +393,7 @@ export default function budgets() {
                               setPage(budgets.totalPages);
                             }}
                           >
-                            <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                            <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                               {budgets.totalPages}
                             </span>
                           </button>

@@ -216,7 +216,7 @@ export default function OrdersPage() {
                         </button>
                         <div className="flex items-center gap-2">
                           <button
-                            class={
+                            className={
                               orders.prevPage === null
                                 ? "hidden"
                                 : "relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
@@ -226,7 +226,7 @@ export default function OrdersPage() {
                               setPage(orders.prevPage);
                             }}
                           >
-                            <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                            <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                               {orders.prevPage}
                             </span>
                           </button>
@@ -239,7 +239,7 @@ export default function OrdersPage() {
                             </span>
                           </button>
                           <button
-                            class={
+                            className={
                               orders.nextPage === null
                                 ? "hidden"
                                 : "relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
@@ -249,7 +249,7 @@ export default function OrdersPage() {
                               setPage(orders.nextPage);
                             }}
                           >
-                            <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                            <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                               {orders.nextPage}
                             </span>
                           </button>
@@ -393,7 +393,7 @@ export default function OrdersPage() {
                               setPage(1);
                             }}
                           >
-                            <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                            <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                               1
                             </span>
                           </button>
@@ -409,7 +409,7 @@ export default function OrdersPage() {
                             ...
                           </span>
                           <button
-                            class={
+                            className={
                               orders.prevPage === null
                                 ? "hidden"
                                 : "relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
@@ -419,7 +419,7 @@ export default function OrdersPage() {
                               setPage(orders.prevPage);
                             }}
                           >
-                            <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                            <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                               {orders.prevPage}
                             </span>
                           </button>
@@ -432,7 +432,7 @@ export default function OrdersPage() {
                             </span>
                           </button>
                           <button
-                            class={
+                            className={
                               orders.nextPage === null
                                 ? "hidden"
                                 : "relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
@@ -442,7 +442,7 @@ export default function OrdersPage() {
                               setPage(orders.nextPage);
                             }}
                           >
-                            <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                            <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                               {orders.nextPage}
                             </span>
                           </button>
@@ -470,7 +470,7 @@ export default function OrdersPage() {
                               setPage(orders.totalPages);
                             }}
                           >
-                            <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                            <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                               {orders.totalPages}
                             </span>
                           </button>

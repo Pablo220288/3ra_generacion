@@ -13,6 +13,7 @@ export default function CheckListPage() {
       setIsCheckLists(true);
       const response = await axios.get("/api/checkList/find");
       setCheckLists(response.data);
+      console.log(response.data);
     } catch (error) {
       console.error("Error fetching Check List data:", error);
     } finally {
@@ -91,7 +92,7 @@ export default function CheckListPage() {
                           {checkList.branch[0].toUpperCase() +
                             checkList.branch.substring(1)}
                         </td>
-                        <td>{checkList.owner.user}</td>
+                        <td>{checkList.owner ? checkList.owner.fullName : ""}</td>
                         <td>
                           <Link
                             href={"/checkList/visualize/" + checkList._id}
@@ -154,7 +155,7 @@ export default function CheckListPage() {
                           {checkList.branch[0].toUpperCase() +
                             checkList.branch.substring(1)}
                         </td>
-                        <td>{checkList.owner.user}</td>
+                        <td>{checkList.owner ? checkList.owner.fullName : ""}</td>
                         <td>
                           <Link
                             href={"/checkList/visualize/" + checkList._id}

@@ -6,7 +6,7 @@ export default async function handle(req, res) {
   // await isAdminRequest(req, res)
 
   const { page } = req.query;
-  const limit = 10;
+  const limit = 12;
   const skip = limit * page - limit;
 
   const data = await OrderModel.paginate(
