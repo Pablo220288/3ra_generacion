@@ -7,11 +7,14 @@ import React, { useEffect, useState } from "react";
 export default function budgets() {
   const [budgets, setBudgets] = useState(null);
   const [isBudgets, setIsBudgets] = useState(false);
+  const [page, setPage] = useState(1);
 
   const getBudgets = async () => {
     try {
       setIsBudgets(true);
-      const response = await axios.get("/api/budget/find");
+      const response = await axios.get(
+        "/api/budget/findPagination/?page=" + page
+      );
       setBudgets(response.data);
     } catch (error) {
       console.error("Error fetching Budgets data:", error);
@@ -20,9 +23,11 @@ export default function budgets() {
     }
   };
 
+  console.log(budgets)
+
   useEffect(() => {
     getBudgets();
-  }, []);
+  }, [page]);
 
   return (
     <Layout>
@@ -58,11 +63,11 @@ export default function budgets() {
       </div>
       {budgets && (
         <>
-          {budgets.length > 0 ? (
+          {budgets.docs.length > 0 ? (
             <>
-              {budgets.length > 0 && (
+              {budgets.docs.length > 0 && (
                 <>
-                  <div className="w-full lg:hidden">
+                  <div className="w-full flex flex-col gap-4 lg:hidden">
                     <table className="basic mt-4">
                       <thead>
                         <tr>
@@ -73,7 +78,7 @@ export default function budgets() {
                         </tr>
                       </thead>
                       <tbody>
-                        {budgets.map((budget) => (
+                        {budgets.docs.map((budget) => (
                           <tr key={budget._id}>
                             <td>
                               {new Date(budget.dateBudget)
@@ -119,8 +124,98 @@ export default function budgets() {
                         ))}
                       </tbody>
                     </table>
+                    <div className="w-full flex items-center justify-center mt-4">
+                      <div className="flex items-center gap-4">
+                        <button
+                          disabled={budgets.hasPrevPage ? false : true}
+                          className="flex items-center gap-2 px-3 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                          type="button"
+                          onClick={() => {
+                            setPage(budgets.prevPage);
+                          }}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={2}
+                            stroke="currentColor"
+                            className="w-4 h-4"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M15.75 19.5 8.25 12l7.5-7.5"
+                            />
+                          </svg>
+                        </button>
+                        <div className="flex items-center gap-2">
+                          <button
+                            class={
+                              budgets.prevPage === null
+                                ? "hidden"
+                                : "relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                            }
+                            type="button"
+                            onClick={() => {
+                              setPage(budgets.prevPage);
+                            }}
+                          >
+                            <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                              {budgets.prevPage}
+                            </span>
+                          </button>
+                          <button
+                            className="relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg bg-gray-900 text-center align-middle font-sans text-xs font-medium uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                            type="button"
+                          >
+                            <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                              {budgets.page}
+                            </span>
+                          </button>
+                          <button
+                            class={
+                              budgets.nextPage === null
+                                ? "hidden"
+                                : "relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                            }
+                            type="button"
+                            onClick={() => {
+                              setPage(budgets.nextPage);
+                            }}
+                          >
+                            <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                              {budgets.nextPage}
+                            </span>
+                          </button>
+                        </div>
+                        <button
+                          disabled={budgets.hasNextPage ? false : true}
+                          className="flex items-center gap-2 px-3 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                          type="button"
+                          onClick={() => {
+                            setPage(budgets.nextPage);
+                          }}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={2}
+                            stroke="currentColor"
+                            className="w-4 h-4"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                  <div className="w-full hidden lg:flex">
+                  <div className="w-full flex-col gap-4 hidden lg:flex">
                     <table className="basic mt-4">
                       <thead>
                         <tr>
@@ -132,7 +227,7 @@ export default function budgets() {
                         </tr>
                       </thead>
                       <tbody>
-                        {budgets.map((budget) => (
+                        {budgets.docs.map((budget) => (
                           <tr key={budget._id}>
                             <td>
                               {"0".repeat(4 - budget.file.toString().length) +
@@ -182,6 +277,152 @@ export default function budgets() {
                         ))}
                       </tbody>
                     </table>
+                    <div className="w-full flex items-center justify-center mt-4">
+                      <div className="flex items-center gap-4">
+                        <button
+                          disabled={budgets.hasPrevPage ? false : true}
+                          className="flex items-center gap-2 px-3 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                          type="button"
+                          onClick={() => {
+                            setPage(budgets.prevPage);
+                          }}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={2}
+                            stroke="currentColor"
+                            className="w-4 h-4"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M15.75 19.5 8.25 12l7.5-7.5"
+                            />
+                          </svg>
+                        </button>
+                        <div className="flex items-center gap-2">
+                          <button
+                            className={
+                              budgets.prevPage === null
+                                ? "hidden"
+                                : budgets.prevPage === 1
+                                ? "hidden"
+                                : "relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                            }
+                            type="button"
+                            onClick={() => {
+                              setPage(1);
+                            }}
+                          >
+                            <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                              1
+                            </span>
+                          </button>
+                          <span
+                            className={
+                              budgets.prevPage === null
+                                ? "hidden"
+                                : budgets.prevPage === 1
+                                ? "hidden"
+                                : ""
+                            }
+                          >
+                            ...
+                          </span>
+                          <button
+                            class={
+                              budgets.prevPage === null
+                                ? "hidden"
+                                : "relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                            }
+                            type="button"
+                            onClick={() => {
+                              setPage(budgets.prevPage);
+                            }}
+                          >
+                            <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                              {budgets.prevPage}
+                            </span>
+                          </button>
+                          <button
+                            className="relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg bg-gray-900 text-center align-middle font-sans text-xs font-medium uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                            type="button"
+                          >
+                            <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                              {budgets.page}
+                            </span>
+                          </button>
+                          <button
+                            class={
+                              budgets.nextPage === null
+                                ? "hidden"
+                                : "relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                            }
+                            type="button"
+                            onClick={() => {
+                              setPage(budgets.nextPage);
+                            }}
+                          >
+                            <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                              {budgets.nextPage}
+                            </span>
+                          </button>
+                          <span
+                            className={
+                              budgets.nextPage === null
+                                ? "hidden"
+                                : budgets.nextPage === budgets.totalPages
+                                ? "hidden"
+                                : ""
+                            }
+                          >
+                            ...
+                          </span>
+                          <button
+                            className={
+                              budgets.nextPage === null
+                                ? "hidden"
+                                : budgets.nextPage === budgets.totalPages
+                                ? "hidden"
+                                : "relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                            }
+                            type="button"
+                            onClick={() => {
+                              setPage(budgets.totalPages);
+                            }}
+                          >
+                            <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                              {budgets.totalPages}
+                            </span>
+                          </button>
+                        </div>
+                        <button
+                          disabled={budgets.hasNextPage ? false : true}
+                          className="flex items-center gap-2 px-3 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                          type="button"
+                          onClick={() => {
+                            setPage(budgets.nextPage);
+                          }}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={2}
+                            stroke="currentColor"
+                            className="w-4 h-4"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </>
               )}

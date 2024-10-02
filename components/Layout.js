@@ -1,22 +1,31 @@
 import SignIn from "@/pages/auth/signin";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Nav from "./Nav";
 import Logo from "./Logo";
 import Footer from "./Footer";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 export default function Layout({ children }) {
   const [showNav, setShowNav] = useState(false);
-
+  
   const { data: session } = useSession();
+  
+  useEffect(() => {
+    AOS.init({
+      once: true,
+    });
+  }, []);
 
   if (!session) {
     return <SignIn />;
   }
+
   return (
     <div className="bg-backgroud-body min-h-screen flex flex-col justify-between">
       <div>
-        <div className="block flex items-center justify-between p-4 pb-0 md:hidden ">
+        <div className="flex items-center justify-between p-4 pb-0 md:hidden ">
           <button
             onClick={() => {
               setShowNav(true);
@@ -41,7 +50,7 @@ export default function Layout({ children }) {
         </div>
         <div className="bg-background-body flex">
           <Nav show={showNav} />
-          <div className="bg-white flex-grow m-3 rounded-lg p-4 shadow-md backdrop-blur-2xl backdrop-saturate-200 z-10">
+          <div className="bg-white flex-grow h-sreem  m-3 rounded-lg p-4 shadow-md backdrop-blur-2xl backdrop-saturate-200 z-10">
             {children}
           </div>
         </div>

@@ -398,7 +398,7 @@ export default function CheckListForm({
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          class="w-6 h-6 text-blue-gray-600"
+          className="w-6 h-6 text-blue-gray-600"
         >
           <path
             stroke-linecap="round"

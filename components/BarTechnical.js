@@ -10,14 +10,15 @@ import {
 } from "recharts";
 
 export default function BarTechnical({ orders }) {
+  console.log(orders)
   const lm = orders.filter(
-    (order) => order.owner.fullName === "Leonardo Moreno"
+    (order) => order.owner?.fullName === "Leonardo Moreno"
   );
   const rr = orders.filter(
-    (order) => order.owner.fullName === "Ricardo Robledo"
+    (order) => order.owner?.fullName === "Ricardo Robledo"
   );
   const ph = orders.filter(
-    (order) => order.owner.fullName === "Pablo Hernandez"
+    (order) => order.owner?.fullName === "Pablo Hernandez"
   );
 
   const data = [

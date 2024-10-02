@@ -145,33 +145,6 @@ export default function OrderForm({
         categories.find((customer) => customer._id === ev.target.value).name
       );
     }
-
-    // Completar Informaciond e Formulario con los datos del Cliente
-    /* setAddress(
-      customer.find((prop) => prop.name === "Direccion") === undefined
-        ? ""
-        : customer.find((prop) => prop.name === "Direccion").values[0]
-    );
-    setLocation(
-      customer.find((prop) => prop.name === "Localidad") === undefined
-        ? ""
-        : customer.find((prop) => prop.name === "Localidad").values[0]
-    );
-    setPhone(
-      customer.find((prop) => prop.name === "Telefono") === undefined
-        ? ""
-        : customer.find((prop) => prop.name === "Telefono").values[0]
-    );
-    setEmail(
-      customer.find((prop) => prop.name === "Email") === undefined
-        ? ""
-        : customer.find((prop) => prop.name === "Email").values[0]
-    );
-    setContact(
-      customer.find((prop) => prop.name === "Contacto") === undefined
-        ? ""
-        : customer.find((prop) => prop.name === "Contacto").values[0]
-    ); */
   };
 
   useEffect(() => {

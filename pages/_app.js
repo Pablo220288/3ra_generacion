@@ -13,7 +13,7 @@ export default function App({
       <Head>
         <link
           rel="icon"
-          href="/assets/icono3rageneracion.png"
+          href="/assets/icono3rageneracion.jpg"
           type="image/<generated>"
           sizes="<generated>"
         />

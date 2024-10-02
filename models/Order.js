@@ -1,4 +1,5 @@
 import { Schema, model, models } from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const OrderSchema = new Schema(
   {
@@ -34,5 +35,7 @@ const OrderSchema = new Schema(
     versionKey: false,
   }
 );
+
+OrderSchema.plugin(mongoosePaginate);
 
 export const OrderModel = models?.Order || model("Order", OrderSchema);

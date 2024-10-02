@@ -93,34 +93,6 @@ export function AlertContextProvider({ children }) {
       }
       hideAlert();
     }
-
-    /*     if (action === "delete") {
-      try {
-        await axios.delete(url);
-      } catch (error) {
-        console.error("Error Delete:", error);
-      } finally {
-        if (destination === undefined) {
-          setRefresh(!refresh);
-        } else {
-          router.push(destination);
-        }
-        hideAlert();
-      }
-    } else if (action === "add") {
-      try {
-        await axios.post(url, data);
-      } catch (error) {
-        console.error("Error Add:", error);
-      } finally {
-        if (destination === undefined) {
-          setRefresh(!refresh);
-        } else {
-          router.push(destination);
-        }
-        hideAlert();
-      }
-    } */
   };
   return (
     <AlertContext.Provider
@@ -206,12 +178,33 @@ export function AlertContextProvider({ children }) {
                     viewBox="0 0 24 24"
                     strokeWidth="1.5"
                     stroke="currentColor"
-                    class="w-4 h-4"
+                    className="w-4 h-4"
                   >
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75"
+                    />
+                  </svg>
+                )}
+                {action === "add" && section === "job" && (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-4 h-4"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M21.75 6.75a4.5 4.5 0 0 1-4.884 4.484c-1.076-.091-2.264.071-2.95.904l-7.152 8.684a2.548 2.548 0 1 1-3.586-3.586l8.684-7.152c.833-.686.995-1.874.904-2.95a4.5 4.5 0 0 1 6.336-4.486l-3.276 3.276a3.004 3.004 0 0 0 2.25 2.25l3.276-3.276c.256.565.398 1.192.398 1.852Z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M4.867 19.125h.008v.008h-.008v-.008Z"
                     />
                   </svg>
                 )}
@@ -257,6 +250,7 @@ export function AlertContextProvider({ children }) {
                     {section === "categorie" && "Agregar Categoria"}
                     {section === "budget" && "Agregar Presupuesto"}
                     {section === "checkList" && "Agregar Check List"}
+                    {section === "job" && "Agregar Tarea"}
                   </span>
                 )}
                 {action === "delete" && (
@@ -266,6 +260,7 @@ export function AlertContextProvider({ children }) {
                     {section === "categorie" && "Eliminar Categoria"}
                     {section === "categorie" && "Eliminar Presupuesto"}
                     {section === "checkList" && "Eliminar Check List"}
+                    {section === "job" && "Eliminar Tarea"}
                   </span>
                 )}
                 {action === "update" && (
@@ -275,6 +270,8 @@ export function AlertContextProvider({ children }) {
                     {section === "categorie" && "Actualizar Categoria"}
                     {section === "budget" && "Actualizar Presupuesto"}
                     {section === "checkList" && "Actualizar Check List"}
+                    {section === "job" && "Actualizar Tarea"}
+                    {section === "jobFinish" && "Finalizar Tarea"}
                   </span>
                 )}
                 <div className="mb-2 text-sm font-normal">
@@ -290,6 +287,8 @@ export function AlertContextProvider({ children }) {
                         `Seguro que quiere agregar el Presupuesto ${file}?`}
                       {section === "checkList" &&
                         `Seguro que quiere agregar el Check List ${file}?`}
+                      {section === "job" &&
+                        `Seguro que quiere agregar la Tarea ${file}?`}
                     </span>
                   )}
                   {action === "delete" && (
@@ -304,6 +303,8 @@ export function AlertContextProvider({ children }) {
                         `Seguro que quiere eliminar el Presupuesto ${file}?`}
                       {section === "checkList" &&
                         `Seguro que quiere elimiar el Check List ${file}?`}
+                      {section === "job" &&
+                        `Seguro que quiere eliminar la Tarea ${file}?`}
                     </span>
                   )}
                   {action === "update" && (
@@ -318,6 +319,10 @@ export function AlertContextProvider({ children }) {
                         `Seguro que quiere actualizar el Presupuesto ${file}?`}
                       {section === "checkList" &&
                         `Seguro que quiere actualizar el Check List ${file}?`}
+                      {section === "job" &&
+                        `Seguro que quiere actualizar la Tarea ${file}?`}
+                      {section === "jobFinish" &&
+                        `Seguro que quiere Finalizar la Tarea ${file}?`}
                     </span>
                   )}
                 </div>
@@ -326,7 +331,9 @@ export function AlertContextProvider({ children }) {
                     <div onClick={actionAlert} className={classNameButton}>
                       {action == "add" && "Agregar"}
                       {action == "delete" && "Eliminar"}
-                      {action == "update" && "Actualizar"}
+                      {action == "update" && section !== "jobFinish" && "Actualizar"}
+                      {action == "update" && section === "jobFinish" && "Finalizar"}
+
                     </div>
                   </div>
                   <div>
