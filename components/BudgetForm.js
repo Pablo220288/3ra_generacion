@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import Spinner from "./Spinner";
 import axios from "axios";
 
-/* export default function BudgetForm({
+export default function BudgetForm({
   _id,
   title,
   budgets,
@@ -529,8 +529,9 @@ import axios from "axios";
       </div>
     </form>
   );
-} */
-export default function BudgetForm({
+}
+// BudgetForm con title de prueba
+/* export default function BudgetForm({
   _id,
   title,
   budgets,
@@ -612,6 +613,7 @@ export default function BudgetForm({
       if (item.title === title) {
         item.items[index].cant = newCant;
         item.items[index].total = item.items[index].price * newCant;
+        item.total = item.items.reduce((a, b) => a + b.total, 0);
         return item;
       }
       return item;
@@ -623,6 +625,7 @@ export default function BudgetForm({
       if (item.title === title) {
         item.items[index].price = newPrice;
         item.items[index].total = item.items[index].cant * newPrice;
+        item.total = item.items.reduce((a, b) => a + b.total, 0);
         return item;
       }
       return item;
@@ -930,7 +933,7 @@ export default function BudgetForm({
         items.map((item, index) => (
           <div className="flex flex-col gap-4 mb-1 mt-4" key={index}>
             <h3 className="text-xs ml-2">{item.title}</h3>
-            {item.items.map((i, index) => (
+            {item.items?.map((i, index) => (
               <div className="flex gap-4 mb-1 mt-2 ml-2" key={index}>
                 <button
                   onClick={() => {
@@ -1138,4 +1141,4 @@ export default function BudgetForm({
       </div>
     </form>
   );
-}
+} */

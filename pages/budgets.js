@@ -23,8 +23,6 @@ export default function budgets() {
     }
   };
 
-  console.log(budgets)
-
   useEffect(() => {
     getBudgets();
   }, [page]);

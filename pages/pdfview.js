@@ -28,6 +28,7 @@ const View = ({ idData }) => {
 
       if (type === "budget") {
         const response = await axios.get("/api/budget/findbyid/?id=" + id);
+
         setData(response.data);
       } else if (type === "checkList") {
         const response = await axios.get("/api/checkList/findbyid/?id=" + id);

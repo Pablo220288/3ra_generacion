@@ -220,7 +220,7 @@ export default function CheckListForm({
       );
     }
   };
-  console.log(items);
+
   return (
     <form onSubmit={saveCheckList} className="mt-4 flex flex-col">
       <div>

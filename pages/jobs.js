@@ -49,10 +49,13 @@ export default function JobsPage() {
         type = order.find((o) => o.name === orderJob).type;
       }
 
-      console.log(state, sort, type);
-
       const response = await axios.get(
-        "/api/job/findFilter/?sort=" + sort + "&type=" + type + "&state=" + state
+        "/api/job/findFilter/?sort=" +
+          sort +
+          "&type=" +
+          type +
+          "&state=" +
+          state
       );
       setJobs(response.data);
     } catch (error) {

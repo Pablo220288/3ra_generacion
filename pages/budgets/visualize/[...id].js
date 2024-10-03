@@ -226,7 +226,7 @@ export default function VisualizeBudgetPage() {
               )}
               <hr />
               <div className="w-full flex flex-col items-start gap-4 mb-6">
-                {/* 22-02-2024 se elimin titulo y numero del listado
+                {/* 22-02-2024 se elimina titulo y numero del listado
                 <div className="flex items-end gap-3">
                   <h4 className="text-normal text-[11px] text-gray-600">
                     Productos / Servicios:
@@ -244,10 +244,7 @@ export default function VisualizeBudgetPage() {
                     <tbody>
                       {budget.items.map((item, index) => (
                         <tr key={index}>
-                          <td className="!text-xs">
-                            {item.name[0].toUpperCase() +
-                              item.name.substring(1)}
-                          </td>
+                          <td className="!text-xs">{item.name}</td>
                           <td className="text-center !text-xs !pl-0">
                             {item.cant}
                           </td>

@@ -19,7 +19,7 @@ export default async function handle(req, res) {
     priority,
     _id,
   } = req.body;
-  console.log(priority);
+
   await JobModel.updateOne(
     { _id },
     {

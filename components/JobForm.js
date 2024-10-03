@@ -156,7 +156,6 @@ export default function JobForm({
       owner: session.user.id,
       priority,
     };
-    console.log(data);
 
     if (data.name === "") {
       toast.error("Ingrese un Nombre de Cliente.");

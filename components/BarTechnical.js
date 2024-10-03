@@ -10,7 +10,6 @@ import {
 } from "recharts";
 
 export default function BarTechnical({ orders }) {
-  console.log(orders)
   const lm = orders.filter(
     (order) => order.owner?.fullName === "Leonardo Moreno"
   );

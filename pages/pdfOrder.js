@@ -15,8 +15,8 @@ import {
 Font.register({
   family: "Poppins",
   fonts: [
-    { src: "./font/Poppins-Medium.otf" }, // font-style: normal, font-weight: normal
-    { src: "./font/Poppins-MediumItalic.otf", fontStyle: "italic" },
+    { src: "./font/Poppins-Medium.ttf" }, // font-style: normal, font-weight: normal
+    { src: "./font/Poppins-MediumItalic.ttf", fontStyle: "italic" },
   ],
 });
 
