@@ -11,7 +11,7 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <Head>
-      <link rel="icon" href="/assets/icono3rageneracion.png" />
+        <link rel="icon" href="/assets/icono3rageneracion.png" />
         <title>3ra Generación | Seguridad Electrónica</title>
         <meta
           name="descrption"

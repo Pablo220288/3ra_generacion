@@ -124,10 +124,17 @@ export default function SettingsAdmin() {
                     <div
                       onClick={() => {
                         const url = "/api/admin/delete?id=" + admin._id;
-                        showAlert(admin.fullName, "delete", url, undefined, null, "admin");
+                        showAlert(
+                          admin.fullName,
+                          "delete",
+                          url,
+                          undefined,
+                          null,
+                          "admin"
+                        );
                       }}
                       className="flex w-fit cursor-pointer select-none items-center gap-2 rounded-md p-2 text-start text-blue-gray-600 leading-tight outline-none transition-all hover:bg-pink-50 hover:bg-opacity-80 hover:text-pink-900 focus:bg-pink-50 focus:bg-opacity-80 focus:text-pink-900 active:bg-pink-50 active:bg-opacity-80 active:text-pink-900"
-                      >
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"

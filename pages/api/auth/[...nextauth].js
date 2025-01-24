@@ -2,6 +2,7 @@ import { mongooseConnect } from "@/lib/mongoose";
 import { AdminModel } from "@/models/Admin";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import toast from "react-hot-toast";
 
 export const authOptions = {
   session: {

@@ -22,7 +22,7 @@ export default function NewAdminPage() {
           <h1>Nuevo Administrador</h1>
         </div>
       </div>
-      <AdminForm />
+      <AdminForm titleButton={"Agregar"} />
     </Layout>
   );
 }

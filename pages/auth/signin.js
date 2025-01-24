@@ -1,6 +1,7 @@
 import Logo from "@/components/Logo";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 export default function SignIn() {
   const [userInfo, setUserInfo] = useState({ user: "", password: "" });
 
@@ -12,13 +13,20 @@ export default function SignIn() {
       password: userInfo.password,
       redirect: false,
     });
+
+    if (res.error) {
+      toast.error("Usuario o Contraseña incorrectos.");
+    }
   };
 
   return (
     <div className="bg-backgroud-body w-screen h-screen flex items-center justify-center">
+      <div>
+        <Toaster />
+      </div>
       <div className="relative flex flex-col rounded-xl bg-transparent bg-clip-border text-gray-700 shadow-none">
         <div className="w-full flex justify-center items-center">
-          <Logo signin={true}/>
+          <Logo signin={true} />
         </div>
         <form
           className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"
