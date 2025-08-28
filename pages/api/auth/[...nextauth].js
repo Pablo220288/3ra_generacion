@@ -2,7 +2,6 @@ import { mongooseConnect } from "@/lib/mongoose";
 import { AdminModel } from "@/models/Admin";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import toast from "react-hot-toast";
 
 export const authOptions = {
   session: {
@@ -14,6 +13,12 @@ export const authOptions = {
       credentials: {},
       authorize: async (credentials, req) => {
         const { user, password } = credentials;
+
+        // Usuarios no autorizados
+        const usersNoAuthorized = ["rrobledo"];
+        if (usersNoAuthorized.includes(user)) {
+          throw new Error("User Unauthorized");
+        }
 
         try {
           await mongooseConnect();

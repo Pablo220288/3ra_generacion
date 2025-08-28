@@ -1,6 +1,6 @@
+import "@/styles/globals.css";
 import { AlertContextProvider } from "@/components/AlertContext";
 import { SignatureContextProvider } from "@/components/SignatureContext";
-import "@/styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
 
