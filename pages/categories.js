@@ -38,7 +38,6 @@ export default function CategoriesPage() {
       setIsCategories(false);
     }
   };
-  
   const saveCategory = async (ev) => {
     ev.preventDefault();
     const data = {

@@ -62,8 +62,20 @@ export default function Dashboard() {
       );
 
       // Verificar que todas las respuestas sean exitosas
-      if (!ordersRes.ok || !budgetsRes.ok || !jobsRes.ok || !checklistsRes.ok) {
-        throw new Error("Una o más peticiones fallaron");
+      if (!ordersRes.ok ) {
+        throw new Error("Error fetching orders data");
+      }
+
+      if (!budgetsRes.ok) {
+        throw new Error("Error fetching budgets data");
+      }
+
+      if (!jobsRes.ok) {
+        throw new Error("Error fetching jobs data");
+      }
+
+      if (!checklistsRes.ok) {
+        throw new Error("Error fetching checklists data");
       }
 
       const [ordersData, budgetsData, jobsData, checklistsData] =
