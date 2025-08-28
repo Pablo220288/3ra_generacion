@@ -1,5 +1,6 @@
 import { mongooseConnect } from "@/lib/mongoose";
 import { OrderModel } from "@/models/Order";
+import { AdminModel } from "@/models/Admin"; 
 
 export default async function handle(req, res) {
   await mongooseConnect();
