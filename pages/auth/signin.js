@@ -18,7 +18,7 @@ export default function SignIn() {
       if (res.error === "User Unauthorized") {
         toast.error("Usuario no autorizado.");
       }
-    } else {
+
       toast.error("Usuario o Contraseña incorrectos.");
     }
   };

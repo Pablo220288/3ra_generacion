@@ -1,143 +1,253 @@
-import BarOrders from "@/components/BarOrders";
-import BarOrdersAnnual from "@/components/BarOrdersAnnual";
-import BarTechnical from "@/components/BarTechnical";
-import Layout from "@/components/Layout";
-import Spinner from "@/components/Spinner";
-import axios from "axios";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import axios from "axios";
+import Layout from "@/components/Layout";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Skeleton } from "@/components/ui/skeleton";
+import { BarChart, BarChart3, Users, FileText, Calendar } from "lucide-react";
 
-export default function Home() {
-  const [orders, setOrders] = useState(null);
-  const [isOrders, setIsOrders] = useState(false);
+// Importar componentes de gráficos
+import OrdersChart from "@/components/charts/OrdersChart";
+import BudgetsChart from "@/components/charts/BudgetsChart";
+import JobsChart from "@/components/charts/JobsChart";
+import ChecklistsChart from "@/components/charts/ChecklistsChart";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+export default function Dashboard() {
+  const [data, setData] = useState({
+    orders: [],
+    budgets: [],
+    jobs: [],
+    checklists: [],
+  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("overview");
+  const [isMobile, setIsMobile] = useState(false);
 
   const { data: session } = useSession();
 
-  const getOrders = async () => {
+  // Detectar si es móvil
+  useEffect(() => {
+    const checkIsMobile = () => setIsMobile(window.innerWidth < 768);
+    checkIsMobile();
+    window.addEventListener("resize", checkIsMobile);
+    return () => window.removeEventListener("resize", checkIsMobile);
+  }, []);
+
+  const fetchData = async () => {
     try {
-      setIsOrders(true);
-      const response = await axios.get("/api/order/find");
-      setOrders(response.data);
+      setIsLoading(true);
+
+      // Realizar todas las peticiones en paralelo
+      const [ordersRes, budgetsRes, jobsRes, checklistsRes] = await Promise.all(
+        [
+          axios.get("/api/order/find"),
+          axios.get("/api/budget/find"),
+          axios.get("/api/job/find"),
+          axios.get("/api/checkList/find"),
+        ]
+      );
+
+      setData({
+        orders: ordersRes.data,
+        budgets: budgetsRes.data,
+        jobs: jobsRes.data,
+        checklists: checklistsRes.data,
+      });
     } catch (error) {
-      console.error("Error fetching Orders data:", error);
+      console.error("Error fetching data:", error);
     } finally {
-      setIsOrders(false);
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    getOrders();
+    fetchData();
   }, []);
+
+  // Calcular estadísticas
+  const stats = {
+    orders: data.orders.length,
+    budgets: data.budgets.length,
+    jobs: data.jobs.length,
+    checklists: data.checklists.length,
+  };
+
+  // Definir las pestañas
+  const tabs = [
+    { value: "overview", label: "Resumen" },
+    { value: "orders", label: "Órdenes" },
+    { value: "budgets", label: "Presupuestos" },
+    { value: "jobs", label: "Tareas" },
+    { value: "checklists", label: "Checklists" },
+  ];
 
   return (
     <Layout>
-      <div className="text-text-generation flex flex-col gap-4 items-start">
-        <div className="flex items-center gap-2">
-          <h2 className="">
-            Hola, <b>{session?.user?.name}</b>
+      <div className="flex-1 space-y-4 p-4 md:p-4 pt-4">
+        <div className="flex items-center justify-between space-y-2">
+          <h2 className="text-2xl font-bold tracking-tight">
+            Hola, <span className="text-primary">{session?.user?.name}</span>
           </h2>
-          <div className="ml-3">
-            {isOrders && <Spinner color={"#0a5a7d"} />}
+          <div className="flex items-center space-x-2">
+            {/* Podrías añadir un selector de rango de fechas aquí */}
           </div>
         </div>
-        {orders && (
+
+        {/* Selector móvil */}
+        {isMobile && (
+          <Select value={activeTab} onValueChange={setActiveTab}>
+            <SelectTrigger className="w-full mb-4">
+              <SelectValue placeholder="Seleccionar vista" />
+            </SelectTrigger>
+            <SelectContent>
+              {tabs.map((tab) => (
+                <SelectItem key={tab.value} value={tab.value}>
+                  {tab.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
+
+        {/* Tabs para desktop */}
+        {!isMobile && (
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+            <TabsList>
+              {tabs.map((tab) => (
+                <TabsTrigger key={tab.value} value={tab.value}>
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
+        )}
+
+        {isLoading ? (
+          <div className="grid gap-4 md:grid-cols-2">
+            {[...Array(4)].map((_, i) => (
+              <Card key={i}>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-4 w-4" />
+                </CardHeader>
+                <CardContent>
+                  <Skeleton className="h-8 w-16" />
+                  <Skeleton className="h-3 w-32 mt-1" />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
           <>
-            {orders.length > 0 ? (
-              <div className="w-full flex flex-col gap-6 items-start">
-                <div className="w-full flex flex-col gap-6 items-start md:flex-row lg:items-end">
-                  <div className="w-full flex gap-6 items-center justify-center">
-                    <div className="flex flex-col items-end mb-2">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
-                        />
-                      </svg>
-                      <span>Ordenes de Trabajo</span>
-                      <p className="text-[10px] italic text-blue-gray-700">
-                        Ordenes de trabajo totales : {orders.length}
+            {/* Contenido de Overview */}
+            {activeTab === "overview" && (
+              <div className="space-y-4">
+                {/* Tarjetas de resumen */}
+                <div className="grid gap-4 md:grid-cols-2">
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium">
+                        Órdenes
+                      </CardTitle>
+                      <FileText className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold">{stats.orders}</div>
+                      <p className="text-xs text-muted-foreground">
+                        Total de órdenes de trabajo
                       </p>
-                    </div>
-                    <BarOrders orders={orders} />
-                  </div>
-                  <div className="w-full flex flex-col lg:flex-row gap-6 items-center justify-center lg:items-center">
-                    <div className="flex flex-col items-end mb-2 mr-20 lg:mr-0">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
-                        />
-                      </svg>
-                      <span>Ordenes por Mes</span>
-                      <p className="text-[10px] italic text-blue-gray-700">
-                        Ordenes de trabajo totales por mes :
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium">
+                        Presupuestos
+                      </CardTitle>
+                      <BarChart3 className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold">{stats.budgets}</div>
+                      <p className="text-xs text-muted-foreground">
+                        Total de presupuestos
                       </p>
-                    </div>
-                    <BarOrdersAnnual orders={orders} />
-                  </div>
-                </div>
-                <div className="w-full flex flex-col gap-6 items-start md:flex-row ">
-                  <div className="w-full flex gap-5 items-center justify-center">
-                    <div className="flex flex-col items-end mb-2">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
-                        />
-                      </svg>
-                      <span>Ordenes por Técnico</span>
-                      <p className="text-[10px] italic text-blue-gray-700">
-                        Total de Ordenes por técnico :
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium">
+                        Trabajos
+                      </CardTitle>
+                      <Users className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold">{stats.jobs}</div>
+                      <p className="text-xs text-muted-foreground">
+                        Total de trabajos realizados
                       </p>
-                    </div>
-                    <BarTechnical orders={orders} />
-                  </div>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium">
+                        Checklists
+                      </CardTitle>
+                      <Calendar className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold">
+                        {stats.checklists}
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Total de checklists completados
+                      </p>
+                    </CardContent>
+                  </Card>
                 </div>
               </div>
-            ) : (
-              <div className="mt-4 flex gap-2 items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-4 h-4"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15.182 16.318A4.486 4.486 0 0012.016 15a4.486 4.486 0 00-3.198 1.318M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z"
-                  />
-                </svg>
-                <span className=" text-sm italic">
-                  No hay datos que analizar.
-                </span>
-              </div>
+            )}
+
+            {/* Contenido de Órdenes */}
+            {activeTab === "orders" && (
+              <Card>
+                <CardContent className="p-4">
+                  <OrdersChart orders={data.orders} />
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Contenido de Presupuestos */}
+            {activeTab === "budgets" && (
+              <Card>
+                <CardContent className="p-4">
+                  <BudgetsChart budgets={data.budgets} />
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Contenido de Tareas */}
+            {activeTab === "jobs" && (
+              <Card>
+                <CardContent className="p-4">
+                  <JobsChart jobs={data.jobs} />
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Contenido de Checklists */}
+            {activeTab === "checklists" && (
+              <Card>
+                <CardContent className="p-4">
+                  <ChecklistsChart checklists={data.checklists} />
+                </CardContent>
+              </Card>
             )}
           </>
         )}
