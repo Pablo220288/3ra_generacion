@@ -13,14 +13,15 @@ export default function OrdersPage() {
   const [orderFilter, setOrderFilter] = useState([]);
   const [page, setPage] = useState(1);
 
-    const getOrders = async () => {
+  const getOrders = async () => {
     try {
       setIsOrders(true);
       setOrders(null);
-      const response = await axios.get(
-        "/api/order/findPagination/?page=" + page
-      );
-      setOrders(response.data);
+      const response = await axios
+        .get("/api/order/findPagination/?page=" + page)
+        .then((result) => {
+          setOrders(result.data);
+        });
     } catch (error) {
       console.error("Error fetching Orders data:", error);
     } finally {

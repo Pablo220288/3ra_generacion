@@ -11,8 +11,9 @@ export default function CheckListPage() {
   const getCheckList = async () => {
     try {
       setIsCheckLists(true);
-      const response = await axios.get("/api/checkList/find");
-      setCheckLists(response.data);
+      const response = await axios.get("/api/checkList/find").then((result) => {
+        setCheckLists(result.data);
+      });
     } catch (error) {
       console.error("Error fetching Check List data:", error);
     } finally {
