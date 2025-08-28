@@ -3,15 +3,25 @@ import { OrderModel } from "@/models/Order";
 
 export default async function handle(req, res) {
   await mongooseConnect();
-  // await isAdminRequest(req, res)
+  
+  const { customer, page = 1 } = req.query;
+  const limit = 12;
+  const skip = limit * page - limit;
 
-  const { customer } = req.query;
-  const data = await OrderModel.find({ "customer.name": customer }, null, {
-    sort: {
-      file: -1,
-    },
-  }).populate(
-    "owner"
-  );
-  res.json(data);
+  try {
+    const data = await OrderModel.paginate(
+      { "customer.name": { $regex: customer, $options: "i" } },
+      {
+        limit,
+        page: parseInt(page),
+        skip,
+        sort: { file: -1 },
+        populate: "owner"
+      }
+    );
+    
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 }
