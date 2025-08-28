@@ -18,7 +18,13 @@ import OrdersChart from "@/components/charts/OrdersChart";
 import BudgetsChart from "@/components/charts/BudgetsChart";
 import JobsChart from "@/components/charts/JobsChart";
 import ChecklistsChart from "@/components/charts/ChecklistsChart";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function Dashboard() {
   const [data, setData] = useState({
@@ -48,18 +54,31 @@ export default function Dashboard() {
       // Realizar todas las peticiones en paralelo
       const [ordersRes, budgetsRes, jobsRes, checklistsRes] = await Promise.all(
         [
-          axios.get("/api/order/find"),
-          axios.get("/api/budget/find"),
-          axios.get("/api/job/find"),
-          axios.get("/api/checkList/find"),
+          fetch("/api/order/find"),
+          fetch("/api/budget/find"),
+          fetch("/api/job/find"),
+          fetch("/api/checkList/find"),
         ]
       );
 
+      // Verificar que todas las respuestas sean exitosas
+      if (!ordersRes.ok || !budgetsRes.ok || !jobsRes.ok || !checklistsRes.ok) {
+        throw new Error("Una o más peticiones fallaron");
+      }
+
+      const [ordersData, budgetsData, jobsData, checklistsData] =
+        await Promise.all([
+          ordersRes.json(),
+          budgetsRes.json(),
+          jobsRes.json(),
+          checklistsRes.json(),
+        ]);
+
       setData({
-        orders: ordersRes.data,
-        budgets: budgetsRes.data,
-        jobs: jobsRes.data,
-        checklists: checklistsRes.data,
+        orders: ordersData,
+        budgets: budgetsData,
+        jobs: jobsData,
+        checklists: checklistsData,
       });
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -119,7 +138,11 @@ export default function Dashboard() {
 
         {/* Tabs para desktop */}
         {!isMobile && (
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="space-y-4"
+          >
             <TabsList>
               {tabs.map((tab) => (
                 <TabsTrigger key={tab.value} value={tab.value}>
