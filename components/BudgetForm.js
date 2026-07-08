@@ -5,6 +5,7 @@ import { AlertContext } from "./AlertContext";
 import { useSession } from "next-auth/react";
 import Spinner from "./Spinner";
 import axios from "axios";
+import { formatMoney, parseMoney } from "@/lib/formatMoney";
 
 export default function BudgetForm({
   _id,
@@ -63,16 +64,18 @@ export default function BudgetForm({
   const handleItemCantChange = (index, item, newCant) => {
     setItems((prev) => {
       const items = [...prev];
+      const price = parseMoney(items[index].price);
       items[index].cant = newCant;
-      items[index].total = items[index].price * newCant;
+      items[index].total = price * Number(newCant || 0);
       return items;
     });
   };
   const handleItemPriceChange = (index, item, newPrice) => {
     setItems((prev) => {
       const items = [...prev];
-      items[index].price = newPrice;
-      items[index].total = items[index].cant * newPrice;
+      const price = parseMoney(newPrice);
+      items[index].price = price;
+      items[index].total = Number(items[index].cant || 0) * price;
       return items;
     });
   };
@@ -169,7 +172,7 @@ export default function BudgetForm({
   }, []);
 
   useEffect(() => {
-    setItemsTotal(items.reduce((acum, item) => acum + item.total, 0));
+    setItemsTotal(items.reduce((acum, item) => acum + parseMoney(item.total), 0));
   }, [items]);
 
   useEffect(() => {
@@ -431,7 +434,7 @@ export default function BudgetForm({
                 className="peer h-full w-full rounded-md border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-3 pl-6 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-indigo-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
                 placeholder=" "
                 type="text"
-                value={item.price}
+                value={formatMoney(item.price)}
                 onChange={(ev) =>
                   handleItemPriceChange(index, item, ev.target.value)
                 }
@@ -448,7 +451,7 @@ export default function BudgetForm({
                 className="peer h-full w-full rounded-md border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-3 pl-6 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-indigo-500 focus:border-t-transparent focus:outline-0 disabled:bg-blue-gray-50"
                 placeholder=" "
                 type="text"
-                value={item.total}
+                value={formatMoney(item.total)}
                 disabled
               />
               <label className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[10px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.1] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-indigo-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-indigo-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:!border-indigo-500 peer-disabled:peer-placeholder-shown:text-blue-gray-500">
@@ -486,7 +489,7 @@ export default function BudgetForm({
             className="peer h-full w-full rounded-md border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-3 pl-6 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-indigo-500 focus:border-t-transparent focus:outline-0 disabled:bg-blue-gray-50"
             placeholder=" "
             type="text"
-            value={itemsTotal}
+            value={formatMoney(itemsTotal)}
             disabled
           />
           <label className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[10px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.1] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-indigo-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-indigo-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:!border-indigo-500 peer-disabled:peer-placeholder-shown:text-blue-gray-500">
@@ -507,7 +510,7 @@ export default function BudgetForm({
               Fecha : {new Date(dollar.fechaActualizacion).toLocaleDateString()}
             </span>
             <span className="text-[10px] italic">
-              Cotización : USD {dollar.venta}
+              Cotización : USD {formatMoney(dollar.venta)}
             </span>
           </div>
         )}
@@ -516,7 +519,7 @@ export default function BudgetForm({
             className="peer h-full w-full rounded-md border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-3 pl-10 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-indigo-500 focus:border-t-transparent focus:outline-0 disabled:bg-blue-gray-50"
             placeholder=" "
             type="text"
-            value={itmesTotalDollar}
+            value={formatMoney(itmesTotalDollar)}
             disabled
           />
           <label className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[10px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.1] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-indigo-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-indigo-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:!border-indigo-500 peer-disabled:peer-placeholder-shown:text-blue-gray-500">

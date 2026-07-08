@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState, useMemo } from "react";
+import { formatMoney } from "@/lib/formatMoney";
 
 // Colores para los gráficos
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82ca9d'];
@@ -165,7 +166,7 @@ export default function BudgetsChart({ budgets }) {
           </div>
           <div className="bg-muted p-3 rounded-lg">
             <div className="text-2xl font-bold">
-              ${currency === 'ars' ? Math.round(totals.totalARS).toLocaleString() : Math.round(totals.totalUSD).toLocaleString()}
+              ${formatMoney(currency === 'ars' ? Math.round(totals.totalARS) : Math.round(totals.totalUSD))}
             </div>
             <div className="text-sm text-muted-foreground">Total {currency.toUpperCase()}</div>
           </div>
@@ -193,7 +194,7 @@ export default function BudgetsChart({ budgets }) {
                   </Pie>
                   <Tooltip 
                     formatter={(value) => [
-                      `${currency === 'ars' ? '$' : 'USD '}${Math.round(value).toLocaleString()}`,
+                      `${currency === 'ars' ? '$' : 'USD '}${formatMoney(Math.round(value))}`,
                       'Monto'
                     ]}
                   />
@@ -215,7 +216,7 @@ export default function BudgetsChart({ budgets }) {
                   <YAxis />
                   <Tooltip 
                     formatter={(value) => [
-                      `${currency === 'ars' ? '$' : 'USD '}${Math.round(value).toLocaleString()}`,
+                      `${currency === 'ars' ? '$' : 'USD '}${formatMoney(Math.round(value))}`,
                       'Monto total'
                     ]}
                     labelFormatter={(label) => `Período: ${label}`}
@@ -240,8 +241,8 @@ export default function BudgetsChart({ budgets }) {
           <div className="mt-4 text-sm text-muted-foreground">
             <p>Promedio por presupuesto: {
               currency === 'ars' ? 
-              `$${Math.round(processBudgetData.reduce((sum, item) => sum + item.total, 0) / processBudgetData.reduce((sum, item) => sum + item.count, 0)).toLocaleString()}` :
-              `USD ${Math.round(processBudgetData.reduce((sum, item) => sum + item.total, 0) / processBudgetData.reduce((sum, item) => sum + item.count, 0)).toLocaleString()}`
+              `$${formatMoney(Math.round(processBudgetData.reduce((sum, item) => sum + item.total, 0) / processBudgetData.reduce((sum, item) => sum + item.count, 0)))}` :
+              `USD ${formatMoney(Math.round(processBudgetData.reduce((sum, item) => sum + item.total, 0) / processBudgetData.reduce((sum, item) => sum + item.count, 0)))}`
             }</p>
           </div>
         )}

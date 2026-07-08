@@ -21,7 +21,11 @@ export default function Nav({ show }) {
 
   const { data: session } = useSession();
 
-  const idSuperAdmin = ["65523c27e089088ecbaa2221", "65c38b878feae67710fab930"];
+  const idSuperAdmin = [
+    "65523c27e089088ecbaa2221",
+    "65c38b878feae67710fab930",
+    "654d16baa44ad50a875562b5",
+  ];
 
   return (
     <aside

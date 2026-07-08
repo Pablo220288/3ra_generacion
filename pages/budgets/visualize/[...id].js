@@ -7,6 +7,7 @@ import Logo from "@/components/Logo";
 import Spinner from "@/components/Spinner";
 import { useSession } from "next-auth/react";
 import { AlertContext } from "@/components/AlertContext";
+import { formatMoney } from "@/lib/formatMoney";
 
 export default function VisualizeBudgetPage() {
   const [budget, setBudget] = useState(null);
@@ -251,7 +252,7 @@ export default function VisualizeBudgetPage() {
                           {item.total === 0 ? (
                             <td className="text-end !text-xs"></td>
                           ) : (
-                            <td className="text-end !text-xs">${item.total}</td>
+                            <td className="text-end !text-xs">${formatMoney(item.total)}</td>
                           )}
                         </tr>
                       ))}
@@ -267,14 +268,14 @@ export default function VisualizeBudgetPage() {
                   <h4 className="text-normal text-[9px] text-gray-600">
                     Total:
                   </h4>
-                  <div className="text-normal text-xs">$ {budget.total}</div>
+                  <div className="text-normal text-xs">$ {formatMoney(budget.total)}</div>
                 </div>
                 <div className="flex items-center gap-3">
                   <h4 className="text-normal text-[9px] text-gray-600">
                     Total:
                   </h4>
                   <div className="text-normal text-xs">
-                    USD {budget.totalDollar}
+                    USD {formatMoney(budget.totalDollar)}
                   </div>
                 </div>
               </div>

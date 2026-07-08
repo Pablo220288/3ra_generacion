@@ -11,6 +11,7 @@ import {
   Svg,
   Path,
 } from "@react-pdf/renderer";
+import { formatMoney } from "@/lib/formatMoney";
 
 Font.register({
   family: "Poppins",
@@ -223,7 +224,7 @@ const PDF = ({ budget }) => {
                     <Text
                       style={[styles.text, { flex: 1, textAlign: "start" }]}
                     >
-                      $ {item.total}
+                      $ {formatMoney(item.total)}
                     </Text>
                   )}
                 </View>
@@ -262,11 +263,11 @@ const PDF = ({ budget }) => {
             >
               <View style={styles.contentTitle}>
                 <Text style={styles.title}>Total :</Text>
-                <Text style={styles.text}>$ {budget.total}</Text>
+                <Text style={styles.text}>$ {formatMoney(budget.total)}</Text>
               </View>
               <View style={styles.contentTitle}>
                 <Text style={styles.title}>Total :</Text>
-                <Text style={styles.text}>USD {budget.totalDollar}</Text>
+                <Text style={styles.text}>USD {formatMoney(budget.totalDollar)}</Text>
               </View>
             </View>
           </View>
